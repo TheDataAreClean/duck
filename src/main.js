@@ -25,7 +25,7 @@ function init() {
   preprocessData();     // mutate ROOMS landmarks with cached fields
   prerenderAllRooms();  // pre-render all 6 backgrounds + 24 tree sprites + 11 landmark sprites
   buildMiniMap();       // pre-render static mini-map base
-  loadRoom(0);          // set live bindings to room 0 assets
+  loadRoom(6);          // set live bindings to room 6 assets
 }
 
 function loop() {

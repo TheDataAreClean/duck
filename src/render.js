@@ -50,12 +50,12 @@ export function render() {
   }
 
   // Subtle labels
-  cx.globalAlpha = 0.38;
+  cx.globalAlpha = 0.75;
   cx.fillStyle   = K.Wh;
   cx.font        = '4px monospace';
   cx.textAlign   = 'center';
-  cx.fillText(ROOMS[room.current].name.toLowerCase(), GW / 2, 7);
-  cx.fillText('cubbon park', GW / 2, GH - 3);
+  cx.fillText(ROOMS[room.current].name.toLowerCase(), GW / 2, 13);
+  cx.fillText('cubbon park', GW / 2, GH - 10);
   cx.textAlign   = 'left';
   cx.globalAlpha = 1;
 }

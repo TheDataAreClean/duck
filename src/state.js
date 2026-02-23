@@ -14,7 +14,7 @@ export const game = {
 };
 
 export const room = {
-  current: 0,
+  current: 6,
   transitioning: false,
   tf: 0,          // transition frame counter 0..TRANSITION_DUR
   nextRoom: null,

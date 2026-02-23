@@ -22,9 +22,9 @@ export const SPECIES = {
 // 3×3 grid layout (col, row) — geographically correct NSEW positions:
 //
 //   col:  0 (WEST)              1 (CENTRAL)            2 (EAST)
-//  row 0: [1: Library Grove]   [0: Attara Kacheri]    [6: Queens Road]
-//  row 1: [5: West Fountain]   [3: Central Lawn]      [4: East Lawns]
-//  row 2: [2: Museum Walk]     [7: South Lawns]       [8: Aquarium Corner]
+//  row 0: [1: Seshadri Road]   [0: Attara Kacheri]    [6: Queens Road]
+//  row 1: [5: Fountain Road]   [3: Central Lawn]      [4: East Lawns]
+//  row 2: [2: Venkatappa Walk] [7: Museum Grounds]    [8: Aquarium Corner]
 
 export const ROOMS = [
 
@@ -51,10 +51,10 @@ export const ROOMS = [
     ],
   },
 
-  // 1: Library Grove  — col 0, row 0 (NW)
+  // 1: Seshadri Road  — col 0, row 0 (NW)
   {
     id: 1,
-    name: 'Library Grove',
+    name: 'Seshadri Road',
     exits: { east: 0, south: 5 },
     trees: [
       { x: 16, y: 44, species: 'mango'      },
@@ -74,10 +74,10 @@ export const ROOMS = [
     ],
   },
 
-  // 2: Museum Walk  — col 0, row 2 (SW)
+  // 2: Venkatappa Walk  — col 0, row 2 (SW)
   {
     id: 2,
-    name: 'Museum Walk',
+    name: 'Venkatappa Walk',
     exits: { north: 5, east: 7 },
     trees: [
       { x: 22, y: 36, species: 'castanospermum' },
@@ -167,10 +167,10 @@ export const ROOMS = [
     ],
   },
 
-  // 5: West Fountain  — col 0, row 1 (W)
+  // 5: Fountain Road  — col 0, row 1 (W)
   {
     id: 5,
-    name: 'West Fountain',
+    name: 'Fountain Road',
     exits: { north: 1, east: 3, south: 2 },
     trees: [
       { x: 22, y: 36, species: 'royal-palm' },
@@ -229,10 +229,10 @@ export const ROOMS = [
     ],
   },
 
-  // 7: South Lawns  — col 1, row 2 (S)
+  // 7: Museum Grounds  — col 1, row 2 (S)
   {
     id: 7,
-    name: 'South Lawns',
+    name: 'Museum Grounds',
     exits: { west: 2, north: 3, east: 8 },
     trees: [
       { x: 20, y: 38, species: 'castanospermum' },

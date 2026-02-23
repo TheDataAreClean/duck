@@ -4,15 +4,15 @@ import { duck, game, room } from './state.js';
 import { ROOMS } from './data.js';
 
 // ── Mini-map ──────────────────────────────────────────────────────────────────
-// 6 rooms in a 3×3 grid. Each room = 4×4 px, step = 6 (4 + 2 gap).
+// 9 rooms in a 3×3 grid. Each room = 4×4 px, step = 6 (4 + 2 gap).
 // 1 px border → canvas is 18×18 px (square).
 //
 // Geographically correct NSEW layout — full 3×3:
 //
 //   col:  0 (WEST)              1 (CENTRAL)            2 (EAST)
-//  row 0: [1: Library Grove]   [0: Attara Kacheri]    [6: Queens Road]
-//  row 1: [5: West Fountain]   [3: Central Lawn]      [4: East Lawns]
-//  row 2: [2: Museum Walk]     [7: South Lawns]       [8: Aquarium Corner]
+//  row 0: [1: Seshadri Road]   [0: Attara Kacheri]    [6: Queens Road]
+//  row 1: [5: Fountain Road]   [3: Central Lawn]      [4: East Lawns]
+//  row 2: [2: Venkatappa Walk] [7: Museum Grounds]    [8: Aquarium Corner]
 //
 //  col=0 → x=1   col=1 → x=7   col=2 → x=13
 //  row=0 → y=1   row=1 → y=7   row=2 → y=13
@@ -23,13 +23,13 @@ const MM_X = 3,  MM_Y = GH - MM_H - 3;  // bottom-left, 3 px from edges
 // Top-left corner of each room's 4×4 block inside the 18×18 canvas
 const MAP_POS = [
   { x:7,  y:1  }, // 0: Attara Kacheri   — col 1, row 0 (N)
-  { x:1,  y:1  }, // 1: Library Grove    — col 0, row 0 (NW)
-  { x:1,  y:13 }, // 2: Museum Walk      — col 0, row 2 (SW)
+  { x:1,  y:1  }, // 1: Seshadri Road    — col 0, row 0 (NW)
+  { x:1,  y:13 }, // 2: Venkatappa Walk  — col 0, row 2 (SW)
   { x:7,  y:7  }, // 3: Central Lawn     — col 1, row 1 (C)
   { x:13, y:7  }, // 4: East Lawns       — col 2, row 1 (E)
-  { x:1,  y:7  }, // 5: West Fountain    — col 0, row 1 (W)
+  { x:1,  y:7  }, // 5: Fountain Road    — col 0, row 1 (W)
   { x:13, y:1  }, // 6: Queens Road      — col 2, row 0 (NE)
-  { x:7,  y:13 }, // 7: South Lawns      — col 1, row 2 (S)
+  { x:7,  y:13 }, // 7: Museum Grounds   — col 1, row 2 (S)
   { x:13, y:13 }, // 8: Aquarium Corner  — col 2, row 2 (SE)
 ];
 

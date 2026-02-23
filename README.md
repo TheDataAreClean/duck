@@ -33,13 +33,13 @@ Cubbon Park (officially Sri Chamarajendra Park) was established in 1870. It span
 
 ```
 ┌──────────────────┬──────────────────┬──────────────────┐
-│  Library Grove   │ Attara Kacheri   │   Queens Road    │
+│  Seshadri Road   │ Attara Kacheri   │   Queens Road    │
 │     (NW)         │      (N)         │      (NE)        │
 ├──────────────────┼──────────────────┼──────────────────┤
-│  West Fountain   │  Central Lawn    │   East Lawns     │
+│  Fountain Road   │  Central Lawn    │   East Lawns     │
 │      (W)         │      (C)         │      (E)         │
 ├──────────────────┼──────────────────┼──────────────────┤
-│  Museum Walk     │   South Lawns    │ Aquarium Corner  │
+│ Venkatappa Walk  │ Museum Grounds   │ Aquarium Corner  │
 │     (SW)         │      (S)         │      (SE)        │
 └──────────────────┴──────────────────┴──────────────────┘
 ```
@@ -48,14 +48,14 @@ Cubbon Park (officially Sri Chamarajendra Park) was established in 1870. It span
 
 | Room | Landmarks |
 |------|-----------|
-| Library Grove | Century Club (1917) |
+| Seshadri Road | Century Club (1917) |
 | Attara Kacheri | Attara Kacheri / Karnataka High Court (1864–1868) |
 | Queens Road | Press Club (1969) · Statue of Edward VII (1919) |
-| West Fountain | Musical Fountain (1995) · State Central Library (1915) |
+| Fountain Road | Musical Fountain (1995) · State Central Library (1915) |
 | Central Lawn | Octagonal Bandstand (c.1914) · Sir Mark Cubbon statue (1866) |
 | East Lawns | Bamboo Grove · Lotus Pond |
-| Museum Walk | Venkatappa Art Gallery (1975) · Chamarajendra Wadiyar statue (1927) |
-| South Lawns | Government Museum (1865) · Jawahar Bal Bhavan (1967) |
+| Venkatappa Walk | Venkatappa Art Gallery (1975) · Chamarajendra Wadiyar statue (1927) |
+| Museum Grounds | Government Museum (1865) · Jawahar Bal Bhavan (1967) |
 | Aquarium Corner | Namma Bengaluru Aquarium (1983/2024) · Queen Victoria statue (1906) |
 
 ### Trees

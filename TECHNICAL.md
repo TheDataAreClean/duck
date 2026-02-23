@@ -92,10 +92,10 @@ Pure static data — no imports, no logic. Two exports:
 #### Room grid (col × row)
 
 ```
-col:  0 (WEST)         1 (CENTRAL)        2 (EAST)
-row 0: [1: Library]   [0: Attara Kacheri] [6: Queens Road]
-row 1: [5: W Fountain][3: Central Lawn]   [4: East Lawns]
-row 2: [2: Museum Walk][7: South Lawns]   [8: Aquarium Corner]
+col:  0 (WEST)               1 (CENTRAL)           2 (EAST)
+row 0: [1: Seshadri Road]   [0: Attara Kacheri]   [6: Queens Road]
+row 1: [5: Fountain Road]   [3: Central Lawn]     [4: East Lawns]
+row 2: [2: Venkatappa Walk] [7: Museum Grounds]   [8: Aquarium Corner]
 ```
 
 #### Landmark types

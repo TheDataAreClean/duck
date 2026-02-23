@@ -4,7 +4,7 @@ import {
   BOB_FREQ, BOB_AMP,
   VISIT_DUR, VISIT_RATE, VISIT_DIST,
   JOY_RATE,
-  TRANSITION_DUR, LANDMARK_DIST,
+  TRANSITION_HALF, LANDMARK_DIST,
 } from './constants.js';
 import { duck, game, room, ui } from './state.js';
 import { dpad } from './dpad.js';
@@ -13,8 +13,6 @@ import { ROOMS } from './data.js';
 import { spawnHearts, updateParticles } from './particles.js';
 import { quack } from './audio.js';
 
-const HALF = TRANSITION_DUR / 2 | 0;
-
 export function update() {
   game.frame++;
   game.bob = Math.sin(game.frame * BOB_FREQ) * BOB_AMP;
@@ -22,27 +20,30 @@ export function update() {
   // ── Transition tick ────────────────────────────────────────────────────────
   if (room.transitioning) {
     room.tf++;
-    if (room.tf === HALF) {
-      // Mid-fade: switch room
-      room.current   = room.nextRoom;
-      duck.x         = room.nextDuckX;
-      duck.y         = room.nextDuckY;
-      duck.visiting  = false;
-      duck.visitTimer = 0;
-      duck.joyPhase  = 0;
-      duck.wf        = 0;
+    if (room.tf === TRANSITION_HALF) {
+      room.current      = room.nextRoom;
+      duck.x            = room.nextDuckX;
+      duck.y            = room.nextDuckY;
+      duck.visiting     = false;
+      duck.visitTimer   = 0;
+      duck.joyPhase     = 0;
+      duck.wf           = 0;
       game.visitedCount = 0;
       ui.nearLandmark   = null;
       ui.cardOpen       = false;
-      loadRoom(ROOMS[room.current]);
+      loadRoom(room.current);
     }
-    if (room.tf >= TRANSITION_DUR) room.transitioning = false;
+    if (room.tf >= TRANSITION_HALF * 2) room.transitioning = false;
     updateParticles();
-    return;  // freeze duck during transition
+    return;
   }
 
   // ── Card open: freeze duck ─────────────────────────────────────────────────
   if (ui.cardOpen) { updateParticles(); return; }
+
+  // Cache current room data for this frame
+  const currentRoom = ROOMS[room.current];
+  const exits       = currentRoom.exits;
 
   // ── Tree visit ────────────────────────────────────────────────────────────
   if (duck.visiting) {
@@ -66,11 +67,10 @@ export function update() {
     if (dpad.down)  { duck.y += DUCK_SPEED; moving = true; }
 
     // ── Room exit detection (before clamping) ─────────────────────────────
-    const exits = ROOMS[room.current].exits;
-    if      (duck.y < -DH     && exits.north != null) startTransition('north');
-    else if (duck.y > GH      && exits.south != null) startTransition('south');
-    else if (duck.x < -DW     && exits.west  != null) startTransition('west');
-    else if (duck.x > GW      && exits.east  != null) startTransition('east');
+    if      (duck.y < -DH    && exits.north != null) startTransition('north', exits);
+    else if (duck.y > GH     && exits.south != null) startTransition('south', exits);
+    else if (duck.x < -DW    && exits.west  != null) startTransition('west',  exits);
+    else if (duck.x > GW     && exits.east  != null) startTransition('east',  exits);
 
     // ── Clamp — relax edges that have exits ───────────────────────────────
     duck.x = Math.max(exits.west  != null ? -DW : 1,
@@ -98,7 +98,7 @@ export function update() {
     }
 
     // ── Landmark proximity ────────────────────────────────────────────────
-    const landmarks = ROOMS[room.current].landmarks;
+    const landmarks = currentRoom.landmarks;
     let nearest = null, bestD = LANDMARK_DIST;
     for (const lm of landmarks) {
       const d = Math.abs(dcx - lm.x) + Math.abs(dcy - lm.y);
@@ -116,10 +116,8 @@ export function update() {
   updateParticles();
 }
 
-function startTransition(dir) {
+function startTransition(dir, exits) {
   if (room.transitioning) return;
-  const exits = ROOMS[room.current].exits;
-  const nextId = exits[dir];
   let ndx = duck.x, ndy = duck.y;
   if      (dir === 'north') ndy = GH - DH - 8;
   else if (dir === 'south') ndy = 8;
@@ -128,7 +126,7 @@ function startTransition(dir) {
 
   room.transitioning = true;
   room.tf            = 0;
-  room.nextRoom      = nextId;
+  room.nextRoom      = exits[dir];
   room.nextDuckX     = ndx;
   room.nextDuckY     = ndy;
 }

@@ -20,7 +20,8 @@ export const JOY_RATE   = 0.18; // rad/frame
 export const JOY_AMP    = 0.22; // max rotation (rad)
 
 // ── Room system ───────────────────────────────────────────────────────────────
-export const TRANSITION_DUR  = 20;  // total frames for fade (out + in)
+export const TRANSITION_DUR  = 20;              // total frames for fade (out + in)
+export const TRANSITION_HALF = TRANSITION_DUR / 2 | 0;  // 10 — midpoint for room swap
 export const LANDMARK_DIST   = 20;  // proximity radius (px) to show info badge
 
 // ── Palette ───────────────────────────────────────────────────────────────────

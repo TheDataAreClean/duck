@@ -1,36 +1,10 @@
 import { cx, GW, GH } from './canvas.js';
 import { ui } from './state.js';
 
-// ── Info button ───────────────────────────────────────────────────────────────
-// Top-left corner, only visible when duck is near a landmark
-const IBX = 4, IBY = 4, IBW = 16, IBH = 9;
+// ── Text utilities (exported for preprocessData in main.js) ───────────────────
+export const MAX_CHARS = 26;
 
-export function hitInfoBtn(gx, gy) {
-  return gx >= IBX && gx <= IBX + IBW && gy >= IBY && gy <= IBY + IBH;
-}
-
-export function drawInfoBadge(frame) {
-  if (!ui.nearLandmark) return;
-
-  const pulse = 0.6 + Math.sin(frame * 0.12) * 0.25;
-  cx.globalAlpha = pulse;
-  cx.fillStyle   = 'rgba(0,0,0,0.75)';
-  cx.fillRect(IBX, IBY, IBW, IBH);
-
-  cx.fillStyle  = '#FFF9C4';
-  cx.font       = '5px monospace';
-  cx.textAlign  = 'center';
-  cx.fillText('[i]', IBX + IBW / 2, IBY + 7);
-  cx.textAlign  = 'left';
-  cx.globalAlpha = 1;
-}
-
-// ── Info card ─────────────────────────────────────────────────────────────────
-const CX = 5, CY = 14, CW = 70, CH = 116;    // card rect (game coords)
-const PAD = 4;                                 // inner padding
-const MAX_CHARS = 26;                          // chars per line at 4px font
-
-function wrapText(text, maxChars) {
+export function wrapText(text, maxChars) {
   const words = text.split(' ');
   const lines = [];
   let line = '';
@@ -47,7 +21,7 @@ function wrapText(text, maxChars) {
   return lines;
 }
 
-const TYPE_LABEL = {
+export const TYPE_LABEL = {
   statue:   'Statue',
   building: 'Building',
   fountain: 'Fountain',
@@ -64,6 +38,32 @@ const TYPE_COLOR = {
   pavilion: '#A1887F',
   grove:    '#81C784',
 };
+
+// ── Info button ───────────────────────────────────────────────────────────────
+const IBX = 4, IBY = 4, IBW = 16, IBH = 9;
+
+export function hitInfoBtn(gx, gy) {
+  return gx >= IBX && gx <= IBX + IBW && gy >= IBY && gy <= IBY + IBH;
+}
+
+export function drawInfoBadge(frame) {
+  if (!ui.nearLandmark) return;
+
+  const pulse = 0.6 + Math.sin(frame * 0.12) * 0.25;
+  cx.globalAlpha = pulse;
+  cx.fillStyle   = 'rgba(0,0,0,0.75)';
+  cx.fillRect(IBX, IBY, IBW, IBH);
+  cx.fillStyle   = '#FFF9C4';
+  cx.font        = '5px monospace';
+  cx.textAlign   = 'center';
+  cx.fillText('[i]', IBX + IBW / 2, IBY + 7);
+  cx.textAlign   = 'left';
+  cx.globalAlpha = 1;
+}
+
+// ── Info card ─────────────────────────────────────────────────────────────────
+const CX = 5, CY = 14, CW = 70, CH = 116;
+const PAD = 4;
 
 export function drawInfoCard() {
   const lm = ui.card;
@@ -84,25 +84,23 @@ export function drawInfoCard() {
   cx.fillRect(CX,          CY,          1,  CH);
   cx.fillRect(CX + CW - 1, CY,          1,  CH);
 
-  const col   = TYPE_COLOR[lm.type] || '#EEE';
-  const label = (TYPE_LABEL[lm.type] || '').toUpperCase();
-  const tx    = CX + PAD;
-  let   ty    = CY + PAD;
+  const col = TYPE_COLOR[lm.type] || '#EEE';
+  const tx  = CX + PAD;
+  let   ty  = CY + PAD;
 
-  // Type badge
+  // Type badge — uses pre-computed _typeUpper
+  const badgeW = lm._typeUpper.length * 2.4 + 4 | 0;
   cx.fillStyle = col;
-  cx.fillRect(tx, ty, label.length * 2.4 + 4 | 0, 6);
+  cx.fillRect(tx, ty, badgeW, 6);
   cx.fillStyle = '#000';
   cx.font      = '3px monospace';
-  cx.fillText(label, tx + 2, ty + 5);
+  cx.fillText(lm._typeUpper, tx + 2, ty + 5);
   ty += 9;
 
-  // Landmark name
+  // Name — uses pre-computed _nameLines
   cx.fillStyle = '#FFFFFF';
   cx.font      = '5px monospace';
-  // Word-wrap the name if it's long
-  const nameLines = wrapText(lm.name, 20);
-  for (const nl of nameLines) {
+  for (const nl of lm._nameLines) {
     cx.fillText(nl, tx, ty + 5);
     ty += 7;
   }
@@ -122,17 +120,16 @@ export function drawInfoCard() {
   cx.fillRect(tx, ty, CW - PAD * 2, 1);
   ty += 4;
 
-  // Body text
+  // Body — uses pre-computed _wrappedInfo
   cx.fillStyle = '#CCCCCC';
   cx.font      = '4px monospace';
-  const lines  = wrapText(lm.info, MAX_CHARS);
-  for (const line of lines) {
-    if (ty + 5 > CY + CH - 10) break;   // don't overflow card
+  for (const line of lm._wrappedInfo) {
+    if (ty + 5 > CY + CH - 10) break;
     cx.fillText(line, tx, ty + 4);
     ty += 6;
   }
 
-  // "tap to close" hint
+  // Tap hint
   cx.globalAlpha = 0.45;
   cx.fillStyle   = '#FFFFFF';
   cx.font        = '3px monospace';

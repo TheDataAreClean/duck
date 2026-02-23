@@ -1,5 +1,5 @@
 import { cx, GW, GH } from './canvas.js';
-import { K, DH } from './constants.js';
+import { K, DH, TRANSITION_HALF } from './constants.js';
 import { duck, game, room, ui } from './state.js';
 import { drawDuckEntity } from './duck.js';
 import { bgCanvas, trees, sortedDrawList, drawTree, drawLandmark } from './world.js';
@@ -7,9 +7,6 @@ import { drawParticles } from './particles.js';
 import { drawDpad } from './dpad.js';
 import { drawInfoBadge, drawInfoCard } from './ui.js';
 import { ROOMS } from './data.js';
-import { TRANSITION_DUR } from './constants.js';
-
-const HALF = TRANSITION_DUR / 2;
 
 export function render() {
   // Background — single drawImage replaces ~300 fillRects
@@ -27,7 +24,7 @@ export function render() {
     if (item.kind === 'tree') {
       drawTree(trees[item.treeIdx], item.treeIdx);
     } else {
-      drawLandmark(item.lm);
+      drawLandmark(item.lm, item.lmIdx);
     }
   }
   if (!duckDrawn) drawDuckEntity();
@@ -41,15 +38,15 @@ export function render() {
 
   // Room transition fade overlay
   if (room.transitioning) {
-    const t     = room.tf / HALF;
-    const alpha = t <= 1 ? t : 2 - t;    // 0→1 (fade out), then 1→0 (fade in)
+    const t     = room.tf / TRANSITION_HALF;
+    const alpha = t <= 1 ? t : 2 - t;
     cx.globalAlpha = Math.min(1, alpha);
     cx.fillStyle   = '#000';
     cx.fillRect(0, 0, GW, GH);
     cx.globalAlpha = 1;
   }
 
-  // Room name (top) + park name (bottom) — subtle labels
+  // Subtle labels
   cx.globalAlpha = 0.3;
   cx.fillStyle   = K.Wh;
   cx.font        = '4px monospace';

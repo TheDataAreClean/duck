@@ -1,28 +1,26 @@
 import { cx, GW, GH } from './canvas.js';
 import { K } from './constants.js';
-import { SPECIES } from './data.js';
+import { SPECIES, ROOMS } from './data.js';
 import { ui } from './state.js';
 
 // ── Flowers ───────────────────────────────────────────────────────────────────
 const FL_COLS = ['#E91E63','#FFC107','#CE93D8','#F44336','#FFFFFF','#FF7043','#80CBC4'];
-let flowers = [];
 
-function randomiseFlowers() {
-  flowers = [];
+function genFlowers() {
+  const f = [];
   for (let i = 0; i < 22; i++)
-    flowers.push({
+    f.push({
       x: 2 + (Math.random() * (GW - 4) | 0),
       y: 4 + (Math.random() * (GH - 10) | 0),
       c: FL_COLS[Math.random() * FL_COLS.length | 0],
     });
+  return f;
 }
 
-// ── Background (pre-rendered: grass + flowers) ────────────────────────────────
-export let bgCanvas;
-
-function buildBackground() {
-  bgCanvas = new OffscreenCanvas(GW, GH);
-  const bt = bgCanvas.getContext('2d');
+// ── Background baking ─────────────────────────────────────────────────────────
+function bakeBackground(flowers) {
+  const oc = new OffscreenCanvas(GW, GH);
+  const bt = oc.getContext('2d');
   bt.imageSmoothingEnabled = false;
 
   bt.fillStyle = K.gr0; bt.fillRect(0, 0, GW, GH);
@@ -41,19 +39,20 @@ function buildBackground() {
     bt.fillStyle = c;         bt.fillRect(x, y, 2, 2);
     bt.fillStyle = '#FFF9C4'; bt.fillRect(x, y, 1, 1);
   }
+  return oc;
 }
 
-// ── Tree sprites ──────────────────────────────────────────────────────────────
+// ── Tree drawing ──────────────────────────────────────────────────────────────
 // Per-type canvas dimensions [halfWidth, heightAboveBase, heightBelowBase]
 const TYPE_DIMS = [
-  [10, 38,  3],  // 0: Rain tree / Silver Oak
-  [13, 38,  3],  // 1: Gulmohar / Laburnum / Copper Pod
-  [10, 38,  3],  // 2: Jacaranda
-  [15, 38,  3],  // 3: Banyan / Peepal
-  [ 8, 42,  3],  // 4: Royal Palm
-  [10, 40,  3],  // 5: Araucaria / Polyalthia / Mast tree
-  [12, 36,  3],  // 6: Mango / Jackfruit
-  [ 9, 32,  3],  // 7: Bamboo
+  [10, 38, 3],  // 0: Rain tree / Silver Oak
+  [13, 38, 3],  // 1: Gulmohar / Laburnum / Copper Pod
+  [10, 38, 3],  // 2: Jacaranda
+  [15, 38, 3],  // 3: Banyan / Peepal
+  [ 8, 42, 3],  // 4: Royal Palm
+  [10, 40, 3],  // 5: Araucaria / Polyalthia
+  [12, 36, 3],  // 6: Mango / Jackfruit
+  [ 9, 32, 3],  // 7: Bamboo
 ];
 
 function drawTreeOnto(ot, spriteType, sc) {
@@ -199,65 +198,144 @@ function drawTreeOnto(ot, spriteType, sc) {
   }
 
   // Ground shadow (all types)
-  ot.fillStyle = 'rgba(0,0,0,0.1)';
   const [hw2] = TYPE_DIMS[spriteType];
+  ot.fillStyle = 'rgba(0,0,0,0.1)';
   ot.fillRect(ox - s(hw2 - 1), oy, s((hw2 - 1) * 2), s(3));
 }
 
-export let trees       = [];
-export let treeSprites = [];
-export let sortedDrawList = [];  // { kind:'tree'|'landmark', y, treeIdx?, lm? }
+function buildTreeSprite(tree) {
+  const spriteType = SPECIES[tree.species]?.sprite ?? 0;
+  const sc  = 0.65 + (tree.y / GH) * 0.55;
+  const s   = v => Math.max(1, v * sc | 0);
+  const [hw, hu, hd] = TYPE_DIMS[spriteType];
 
-// ── loadRoom — called at startup and on every room transition ─────────────────
-export function loadRoom(roomData) {
-  // 1. New random flowers + re-bake background
-  randomiseFlowers();
-  buildBackground();
+  const oc = new OffscreenCanvas(Math.max(s(hw * 2) + 4, 4), Math.max(s(hu + hd) + 4, 4));
+  const ot = oc.getContext('2d');
+  ot.imageSmoothingEnabled = false;
+  drawTreeOnto(ot, spriteType, sc);
 
-  // 2. Build trees with visit state
-  trees = roomData.trees.map(d => ({ ...d, visited: false, glow: 0 }));
-
-  // 3. Pre-render one sprite per tree
-  treeSprites = [];
-  for (let i = 0; i < trees.length; i++) {
-    const tree = trees[i];
-    const spriteType = SPECIES[tree.species]?.sprite ?? 0;
-    const sc  = 0.65 + (tree.y / GH) * 0.55;
-    const s   = v => Math.max(1, v * sc | 0);
-    const [hw, hu, hd] = TYPE_DIMS[spriteType];
-
-    const W  = s(hw * 2) + 4;
-    const H  = s(hu + hd) + 4;
-    const ox = s(hw) + 2;
-    const oy = s(hu) + 2;
-
-    const oc = new OffscreenCanvas(Math.max(W, 4), Math.max(H, 4));
-    const ot = oc.getContext('2d');
-    ot.imageSmoothingEnabled = false;
-
-    // Pass a sc-aware helper with local ox/oy
-    drawTreeOnto(ot, spriteType, sc);
-
-    treeSprites.push({
-      canvas: oc,
-      bx: tree.x - ox + 2,
-      by: tree.y - oy + 2,
-      gx: tree.x - s(hw),
-      gy: tree.y - s(hu),
-      gw: s(hw * 2),
-      gh: s(hu),
-    });
-  }
-
-  // 4. Depth-sorted draw list combining trees and landmarks
-  const entries = [
-    ...trees.map((t, i) => ({ kind: 'tree',     y: t.y,    treeIdx: i })),
-    ...roomData.landmarks.map(lm => ({ kind: 'landmark', y: lm.y, lm })),
-  ];
-  sortedDrawList = entries.sort((a, b) => a.y - b.y);
+  const bx = tree.x - s(hw);
+  const by = tree.y - s(hu);
+  return { canvas: oc, bx, by, gx: bx, gy: by, gw: s(hw * 2), gh: s(hu) };
 }
 
-// ── drawTree ──────────────────────────────────────────────────────────────────
+// ── Landmark icon pre-rendering ───────────────────────────────────────────────
+const LM_W = 14, LM_H = 14, LM_OX = 7, LM_OY = 12;
+
+export const LM_COLOR = {
+  statue:   '#BDBDBD',
+  building: '#BCAAA4',
+  fountain: '#4FC3F7',
+  pond:     '#29B6F6',
+  pavilion: '#A1887F',
+  grove:    '#81C784',
+};
+
+function drawLandmarkIconOnto(ctx, type, x, y) {
+  const col = LM_COLOR[type] || '#EEE';
+  ctx.fillStyle = col;
+
+  switch (type) {
+    case 'statue':
+      ctx.fillRect(x - 1, y - 6, 3, 5);
+      ctx.fillRect(x,     y - 7, 1, 1);
+      ctx.fillStyle = '#9E9E9E';
+      ctx.fillRect(x - 2, y - 1, 5, 1);
+      break;
+    case 'building':
+      ctx.fillRect(x - 3, y - 6, 7, 5);
+      ctx.fillStyle = '#FFF9C4';
+      ctx.fillRect(x - 2, y - 5, 1, 2);
+      ctx.fillRect(x + 1, y - 5, 1, 2);
+      ctx.fillStyle = '#5D4037';
+      ctx.fillRect(x,     y - 2, 1, 2);
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 4, y - 7, 9, 2);
+      break;
+    case 'fountain':
+      ctx.fillStyle = '#42A5F5';
+      ctx.fillRect(x,     y - 8, 1, 5);
+      ctx.fillRect(x - 1, y - 7, 1, 4);
+      ctx.fillRect(x + 1, y - 7, 1, 4);
+      ctx.fillRect(x - 2, y - 3, 5, 1);
+      ctx.fillRect(x - 1, y - 2, 3, 1);
+      break;
+    case 'pond':
+      ctx.fillStyle = '#42A5F5';
+      ctx.fillRect(x - 5, y - 3, 10, 3);
+      ctx.fillRect(x - 3, y - 4, 6,  1);
+      ctx.fillRect(x - 3, y,     6,  1);
+      ctx.fillStyle = '#81D4FA';
+      ctx.fillRect(x - 3, y - 3, 2,  1);
+      break;
+    case 'pavilion':
+      ctx.fillRect(x - 3, y - 5, 7, 4);
+      ctx.fillStyle = '#5D4037';
+      ctx.fillRect(x - 4, y - 7, 9, 2);
+      ctx.fillRect(x - 2, y - 9, 5, 3);
+      ctx.fillRect(x,     y -10, 1, 1);
+      break;
+    case 'grove':
+      ctx.fillStyle = '#558B2F';
+      ctx.fillRect(x - 4, y - 6, 3, 5);
+      ctx.fillRect(x + 1, y - 5, 3, 4);
+      ctx.fillRect(x - 1, y - 7, 3, 4);
+      break;
+  }
+
+  ctx.fillStyle = col;
+  ctx.fillRect(x - 2, y - 1, 5, 2);   // base marker
+}
+
+function buildLandmarkSprite(lm) {
+  const oc = new OffscreenCanvas(LM_W, LM_H);
+  const ot = oc.getContext('2d');
+  ot.imageSmoothingEnabled = false;
+  drawLandmarkIconOnto(ot, lm.type, LM_OX, LM_OY);
+  return { canvas: oc, bx: lm.x - LM_OX, by: lm.y - LM_OY };
+}
+
+// ── Room cache — all rooms pre-rendered at startup ────────────────────────────
+const roomCache = [];
+
+function prerenderRoom(roomData) {
+  const flowers      = genFlowers();
+  const bgCv         = bakeBackground(flowers);
+  const treeSprites  = roomData.trees.map(buildTreeSprite);
+  const lmSprites    = roomData.landmarks.map(buildLandmarkSprite);
+
+  // Depth-sorted draw list: trees by treeIdx, landmarks by lmIdx
+  const entries = [
+    ...roomData.trees.map((t, i) => ({ kind: 'tree',     y: t.y,    treeIdx: i })),
+    ...roomData.landmarks.map((lm, i) => ({ kind: 'landmark', y: lm.y, lm, lmIdx: i })),
+  ];
+  const sortedList = entries.sort((a, b) => a.y - b.y);
+
+  return { bgCv, treeSprites, lmSprites, sortedList };
+}
+
+export function prerenderAllRooms() {
+  for (const roomData of ROOMS)
+    roomCache.push(prerenderRoom(roomData));
+}
+
+// ── Active room state (live bindings — importers see updates) ─────────────────
+export let bgCanvas       = null;
+export let trees          = [];
+export let treeSprites    = [];
+export let landmarkSprites = [];
+export let sortedDrawList = [];
+
+export function loadRoom(roomIdx) {
+  const cached       = roomCache[roomIdx];
+  bgCanvas           = cached.bgCv;
+  trees              = ROOMS[roomIdx].trees.map(t => ({ ...t, visited: false, glow: 0 }));
+  treeSprites        = cached.treeSprites;
+  landmarkSprites    = cached.lmSprites;
+  sortedDrawList     = cached.sortedList;
+}
+
+// ── Draw functions ────────────────────────────────────────────────────────────
 export function drawTree(tree, idx) {
   const spr = treeSprites[idx];
   cx.drawImage(spr.canvas, spr.bx, spr.by);
@@ -269,89 +347,19 @@ export function drawTree(tree, idx) {
   }
 }
 
-// ── Landmark drawing ──────────────────────────────────────────────────────────
-const LM_COLOR = {
-  statue:   '#BDBDBD',
-  building: '#BCAAA4',
-  fountain: '#4FC3F7',
-  pond:     '#29B6F6',
-  pavilion: '#A1887F',
-  grove:    '#81C784',
-};
+export function drawLandmark(lm, lmIdx) {
+  const spr = landmarkSprites[lmIdx];
+  cx.drawImage(spr.canvas, spr.bx, spr.by);
 
-function drawLandmarkIcon(type, x, y) {
-  const col = LM_COLOR[type] || '#EEE';
-  cx.fillStyle = col;
-
-  switch (type) {
-    case 'statue':
-      cx.fillRect(x - 1, y - 6, 3, 5);   // pillar
-      cx.fillRect(x,     y - 7, 1, 1);   // head
-      cx.fillStyle = '#9E9E9E';
-      cx.fillRect(x - 2, y - 1, 5, 1);   // base
-      break;
-    case 'building':
-      cx.fillRect(x - 3, y - 6, 7, 5);   // block
-      cx.fillStyle = '#FFF9C4';
-      cx.fillRect(x - 2, y - 5, 1, 2);   // window L
-      cx.fillRect(x + 1, y - 5, 1, 2);   // window R
-      cx.fillStyle = '#5D4037';
-      cx.fillRect(x,     y - 2, 1, 2);   // door
-      cx.fillStyle = col;
-      cx.fillRect(x - 4, y - 7, 9, 2);   // roof
-      break;
-    case 'fountain':
-      cx.fillStyle = '#42A5F5';
-      cx.fillRect(x,     y - 8, 1, 5);   // centre jet
-      cx.fillRect(x - 1, y - 7, 1, 4);   // left jet
-      cx.fillRect(x + 1, y - 7, 1, 4);   // right jet
-      cx.fillRect(x - 2, y - 3, 5, 1);   // basin rim
-      cx.fillRect(x - 1, y - 2, 3, 1);
-      break;
-    case 'pond':
-      cx.fillStyle = '#42A5F5';
-      cx.fillRect(x - 5, y - 3, 10, 3);
-      cx.fillRect(x - 3, y - 4, 6,  1);
-      cx.fillRect(x - 3, y,     6,  1);
-      cx.fillStyle = '#81D4FA';
-      cx.fillRect(x - 3, y - 3, 2,  1);
-      break;
-    case 'pavilion':
-      cx.fillRect(x - 3, y - 5, 7, 4);   // body
-      cx.fillStyle = '#5D4037';
-      cx.fillRect(x - 4, y - 7, 9, 2);   // roof eave
-      cx.fillRect(x - 2, y - 9, 5, 3);   // upper roof
-      cx.fillRect(x,     y -10, 1, 1);   // peak
-      break;
-    case 'grove':
-      cx.fillStyle = '#558B2F';
-      cx.fillRect(x - 4, y - 6, 3, 5);
-      cx.fillRect(x + 1, y - 5, 3, 4);
-      cx.fillRect(x - 1, y - 7, 3, 4);
-      break;
-  }
-
-  // Base marker
-  cx.fillStyle = col;
-  cx.fillRect(x - 2, y - 1, 5, 2);
-}
-
-export function drawLandmark(lm) {
-  const x = lm.x | 0, y = lm.y | 0;
-  drawLandmarkIcon(lm.type, x, y);
-
-  // Proximity name label
   if (ui.nearLandmark === lm) {
-    const col  = LM_COLOR[lm.type] || '#EEE';
-    const text = lm.name.toLowerCase();
-    const tw   = text.length * 2.4 | 0;
+    const col = LM_COLOR[lm.type] || '#EEE';
     cx.globalAlpha = 0.92;
     cx.fillStyle   = 'rgba(0,0,0,0.65)';
-    cx.fillRect(x - tw / 2 - 2, y - 17, tw + 4, 7);
+    cx.fillRect(lm.x - lm._nameWidth / 2 - 2, lm.y - 17, lm._nameWidth + 4, 7);
     cx.fillStyle   = col;
     cx.font        = '4px monospace';
     cx.textAlign   = 'center';
-    cx.fillText(text, x, y - 11);
+    cx.fillText(lm._nameLower, lm.x, lm.y - 11);
     cx.textAlign   = 'left';
     cx.globalAlpha = 1;
   }

@@ -1,5 +1,5 @@
 import { cx, GW, GH } from './canvas.js';
-import { K } from './constants.js';
+import { K, UI_BG, UI_BORDER } from './constants.js';
 import { SPECIES, ROOMS } from './data.js';
 import { ui } from './state.js';
 
@@ -353,9 +353,17 @@ export function drawLandmark(lm, lmIdx) {
 
   if (ui.nearLandmark === lm) {
     const col = LM_COLOR[lm.type] || '#EEE';
+    const lx  = lm.x - lm._nameWidth / 2 - 2;
+    const ly  = lm.y - 17;
+    const lw  = lm._nameWidth + 4;
     cx.globalAlpha = 0.92;
-    cx.fillStyle   = 'rgba(0,0,0,0.65)';
-    cx.fillRect(lm.x - lm._nameWidth / 2 - 2, lm.y - 17, lm._nameWidth + 4, 7);
+    cx.fillStyle   = UI_BG;
+    cx.fillRect(lx, ly, lw, 7);
+    cx.fillStyle   = UI_BORDER;
+    cx.fillRect(lx,      ly,     lw, 1);
+    cx.fillRect(lx,      ly + 6, lw, 1);
+    cx.fillRect(lx,      ly,     1,  7);
+    cx.fillRect(lx + lw - 1, ly, 1,  7);
     cx.fillStyle   = col;
     cx.font        = '4px monospace';
     cx.textAlign   = 'center';

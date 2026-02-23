@@ -24,6 +24,10 @@ export const TRANSITION_DUR  = 20;              // total frames for fade (out + 
 export const TRANSITION_HALF = TRANSITION_DUR / 2 | 0;  // 10 — midpoint for room swap
 export const LANDMARK_DIST   = 20;  // proximity radius (px) to show info badge
 
+// ── UI panel style ────────────────────────────────────────────────────────────
+export const UI_BG     = '#0E0E1A';  // dark navy — shared panel background
+export const UI_BORDER = '#2D2D50';  // muted indigo — shared panel border
+
 // ── Palette ───────────────────────────────────────────────────────────────────
 export const K = {
   Y:'#FFD700', Yd:'#FFB300', Yl:'#FFF0A0', O:'#FF8C00', Ey:'#1a1a1a', Wh:'#FFFFFF',

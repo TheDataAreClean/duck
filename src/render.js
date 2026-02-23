@@ -6,6 +6,7 @@ import { bgCanvas, trees, sortedDrawList, drawTree, drawLandmark } from './world
 import { drawParticles } from './particles.js';
 import { drawDpad } from './dpad.js';
 import { drawInfoBadge, drawInfoCard } from './ui.js';
+import { drawMiniMap, drawExitIndicators } from './hud.js';
 import { ROOMS } from './data.js';
 
 export function render() {
@@ -31,6 +32,8 @@ export function render() {
 
   drawParticles();
   drawDpad();
+  drawMiniMap();
+  drawExitIndicators(game.frame);
 
   // UI: info badge + card
   drawInfoBadge(game.frame);
@@ -47,7 +50,7 @@ export function render() {
   }
 
   // Subtle labels
-  cx.globalAlpha = 0.3;
+  cx.globalAlpha = 0.38;
   cx.fillStyle   = K.Wh;
   cx.font        = '4px monospace';
   cx.textAlign   = 'center';

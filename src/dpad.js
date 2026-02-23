@@ -29,14 +29,14 @@ export function clearDpad() {
 export function drawDpad() {
   const m = DP.x | 0, n = DP.y | 0;
 
-  // Cross background
-  cx.fillStyle = 'rgba(0,0,0,0.4)';
+  // Cross background — matches UI panel tone
+  cx.fillStyle = 'rgba(14,14,26,0.65)';
   cx.fillRect(m - B*1.5|0, n - B/2|0,   B * 3, B);
   cx.fillRect(m - B/2|0,   n - B*1.5|0, B, B * 3);
 
   // Button highlights
   for (const [dir, rx, ry] of DP_BTNS) {
-    cx.fillStyle = dpad[dir] ? 'rgba(255,240,100,0.75)' : 'rgba(255,255,255,0.18)';
+    cx.fillStyle = dpad[dir] ? 'rgba(255,240,100,0.75)' : 'rgba(255,255,255,0.13)';
     cx.fillRect(rx, ry, B, B);
   }
 

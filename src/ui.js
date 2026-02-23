@@ -1,4 +1,5 @@
 import { cx, GW, GH } from './canvas.js';
+import { UI_BG, UI_BORDER } from './constants.js';
 import { ui } from './state.js';
 
 // ── Text utilities (exported for preprocessData in main.js) ───────────────────
@@ -40,7 +41,7 @@ const TYPE_COLOR = {
 };
 
 // ── Info button ───────────────────────────────────────────────────────────────
-const IBX = 4, IBY = 4, IBW = 16, IBH = 9;
+const IBX = 3, IBY = 3, IBW = 16, IBH = 9;
 
 export function hitInfoBtn(gx, gy) {
   return gx >= IBX && gx <= IBX + IBW && gy >= IBY && gy <= IBY + IBH;
@@ -49,10 +50,15 @@ export function hitInfoBtn(gx, gy) {
 export function drawInfoBadge(frame) {
   if (!ui.nearLandmark) return;
 
-  const pulse = 0.6 + Math.sin(frame * 0.12) * 0.25;
+  const pulse = 0.65 + Math.sin(frame * 0.12) * 0.25;
   cx.globalAlpha = pulse;
-  cx.fillStyle   = 'rgba(0,0,0,0.75)';
+  cx.fillStyle   = UI_BG;
   cx.fillRect(IBX, IBY, IBW, IBH);
+  cx.fillStyle   = UI_BORDER;
+  cx.fillRect(IBX,          IBY,          IBW, 1);
+  cx.fillRect(IBX,          IBY + IBH - 1, IBW, 1);
+  cx.fillRect(IBX,          IBY,          1, IBH);
+  cx.fillRect(IBX + IBW - 1, IBY,          1, IBH);
   cx.fillStyle   = '#FFF9C4';
   cx.font        = '5px monospace';
   cx.textAlign   = 'center';
@@ -74,11 +80,11 @@ export function drawInfoCard() {
   cx.fillRect(0, 0, GW, GH);
 
   // Card background
-  cx.fillStyle = '#1A1A2E';
+  cx.fillStyle = UI_BG;
   cx.fillRect(CX, CY, CW, CH);
 
   // Card border
-  cx.fillStyle = '#333355';
+  cx.fillStyle = UI_BORDER;
   cx.fillRect(CX,          CY,          CW, 1);
   cx.fillRect(CX,          CY + CH - 1, CW, 1);
   cx.fillRect(CX,          CY,          1,  CH);
@@ -116,7 +122,7 @@ export function drawInfoCard() {
 
   // Separator
   ty += 2;
-  cx.fillStyle = '#333355';
+  cx.fillStyle = UI_BORDER;
   cx.fillRect(tx, ty, CW - PAD * 2, 1);
   ty += 4;
 

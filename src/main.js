@@ -2,6 +2,7 @@ import { buildDuckSprites } from './duck.js';
 import { prerenderAllRooms, loadRoom } from './world.js';
 import { ROOMS } from './data.js';
 import { wrapText, MAX_CHARS, TYPE_LABEL } from './ui.js';
+import { buildMiniMap } from './hud.js';
 import { update } from './update.js';
 import { render } from './render.js';
 import './input.js';  // registers event listeners — side-effects only
@@ -23,6 +24,7 @@ function init() {
   buildDuckSprites();   // 8 duck sprites — done once
   preprocessData();     // mutate ROOMS landmarks with cached fields
   prerenderAllRooms();  // pre-render all 6 backgrounds + 24 tree sprites + 11 landmark sprites
+  buildMiniMap();       // pre-render static mini-map base
   loadRoom(0);          // set live bindings to room 0 assets
 }
 

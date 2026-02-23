@@ -68,7 +68,7 @@ export function drawInfoBadge(frame) {
 }
 
 // ── Info card ─────────────────────────────────────────────────────────────────
-const CX = 5, CY = 14, CW = 70, CH = 116;
+const CX = 5, CY = 8, CW = 70, CH = 128;
 const PAD = 4;
 
 export function drawInfoCard() {

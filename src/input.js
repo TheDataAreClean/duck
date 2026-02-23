@@ -3,6 +3,7 @@ import { cv, SC } from './canvas.js';
 import { dpad, hitDpad, clearDpad } from './dpad.js';
 import { ui } from './state.js';
 import { hitInfoBtn } from './ui.js';
+import { unlockAudio } from './audio.js';
 
 // Cache to avoid layout reflow on every touch/mouse event
 let canvasRect = cv.getBoundingClientRect();
@@ -25,6 +26,7 @@ function handleTap(gx, gy) {
 let activeTouchId = null;
 
 cv.addEventListener('touchstart', e => {
+  unlockAudio();
   e.preventDefault();
   for (const t of e.changedTouches) {
     const [gx, gy] = toGame(t.clientX, t.clientY);
@@ -54,6 +56,7 @@ cv.addEventListener('touchend', e => {
 
 // Mouse fallback (desktop)
 cv.addEventListener('mousedown', e => {
+  unlockAudio();
   const [gx, gy] = toGame(e.clientX, e.clientY);
   if (handleTap(gx, gy)) return;
   clearDpad(); const dir = hitDpad(gx, gy); if (dir) dpad[dir] = true;

@@ -1,5 +1,10 @@
 let AC;
 
+export function unlockAudio() {
+  if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+  if (AC.state === 'suspended') AC.resume();
+}
+
 export function sfx(freq, dur, delay = 0, type = 'square') {
   try {
     if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();

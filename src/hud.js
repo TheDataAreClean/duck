@@ -4,40 +4,49 @@ import { duck, game, room } from './state.js';
 import { ROOMS } from './data.js';
 
 // ── Mini-map ──────────────────────────────────────────────────────────────────
-// 6 rooms in a 2-col × 4-row grid. Each room = 4×4 px, step = 6 (4 + 2 gap).
-// 1 px border → canvas is 12×24 px.
+// 6 rooms in a 3×3 grid. Each room = 4×4 px, step = 6 (4 + 2 gap).
+// 1 px border → canvas is 18×18 px (square).
+//
+// Geographically correct NSEW layout — full 3×3:
+//
+//   col:  0 (WEST)              1 (CENTRAL)            2 (EAST)
+//  row 0: [1: Library Grove]   [0: Attara Kacheri]    [6: Queens Road]
+//  row 1: [5: West Fountain]   [3: Central Lawn]      [4: East Lawns]
+//  row 2: [2: Museum Walk]     [7: South Lawns]       [8: Aquarium Corner]
+//
+//  col=0 → x=1   col=1 → x=7   col=2 → x=13
+//  row=0 → y=1   row=1 → y=7   row=2 → y=13
 
-const MM_W = 12, MM_H = 24;
+const MM_W = 18, MM_H = 18;
 const MM_X = 3,  MM_Y = GH - MM_H - 3;  // bottom-left, 3 px from edges
 
-// Top-left corner of each room's 4×4 block inside the 12×24 canvas (1 px padding)
-//        col=0 → x=1     col=1 → x=7
-//        row=0 → y=1     row=1 → y=7     row=2 → y=13     row=3 → y=19
-//
-//             [5]          col=1 row=0
-//              |
-//   [1]  —  [2]            col=0,1 row=1
-//    |         |
-//   [0]  —  [3]            col=0,1 row=2
-//              |
-//             [4]          col=1 row=3
+// Top-left corner of each room's 4×4 block inside the 18×18 canvas
 const MAP_POS = [
-  { x:1, y:13 }, // 0: West Gate
-  { x:1, y:7  }, // 1: Library Grove
-  { x:7, y:7  }, // 2: Museum Quarter
-  { x:7, y:13 }, // 3: Central Lawn
-  { x:7, y:19 }, // 4: South Park
-  { x:7, y:1  }, // 5: North Fountain
+  { x:7,  y:1  }, // 0: Attara Kacheri   — col 1, row 0 (N)
+  { x:1,  y:1  }, // 1: Library Grove    — col 0, row 0 (NW)
+  { x:1,  y:13 }, // 2: Museum Walk      — col 0, row 2 (SW)
+  { x:7,  y:7  }, // 3: Central Lawn     — col 1, row 1 (C)
+  { x:13, y:7  }, // 4: East Lawns       — col 2, row 1 (E)
+  { x:1,  y:7  }, // 5: West Fountain    — col 0, row 1 (W)
+  { x:13, y:1  }, // 6: Queens Road      — col 2, row 0 (NE)
+  { x:7,  y:13 }, // 7: South Lawns      — col 1, row 2 (S)
+  { x:13, y:13 }, // 8: Aquarium Corner  — col 2, row 2 (SE)
 ];
 
 // Corridor rects [x, y, w, h] filling the 2-px gaps between adjacent rooms
 const CORRIDORS = [
-  [2, 11, 2, 2], // 0 ↔ 1
-  [5,  8, 2, 2], // 1 ↔ 2
-  [5, 14, 2, 2], // 0 ↔ 3
-  [8, 11, 2, 2], // 2 ↔ 3
-  [8, 17, 2, 2], // 3 ↔ 4
-  [8,  5, 2, 2], // 2 ↔ 5
+  [5,   2, 2, 2], // 1 ↔ 0  (row 0, col 0↔1)
+  [11,  2, 2, 2], // 0 ↔ 6  (row 0, col 1↔2)
+  [2,   5, 2, 2], // 1 ↔ 5  (col 0, row 0↔1)
+  [8,   5, 2, 2], // 0 ↔ 3  (col 1, row 0↔1)
+  [13,  5, 2, 2], // 6 ↔ 4  (col 2, row 0↔1)
+  [5,   8, 2, 2], // 5 ↔ 3  (row 1, col 0↔1)
+  [11,  8, 2, 2], // 3 ↔ 4  (row 1, col 1↔2)
+  [2,  11, 2, 2], // 5 ↔ 2  (col 0, row 1↔2)
+  [8,  11, 2, 2], // 3 ↔ 7  (col 1, row 1↔2)
+  [13, 11, 2, 2], // 4 ↔ 8  (col 2, row 1↔2)
+  [5,  14, 2, 2], // 2 ↔ 7  (row 2, col 0↔1)
+  [11, 14, 2, 2], // 7 ↔ 8  (row 2, col 1↔2)
 ];
 
 let mmCanvas = null;

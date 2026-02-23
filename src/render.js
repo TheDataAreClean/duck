@@ -1,36 +1,61 @@
-import { cx, GW } from './canvas.js';
+import { cx, GW, GH } from './canvas.js';
 import { K, DH } from './constants.js';
-import { duck } from './state.js';
+import { duck, game, room, ui } from './state.js';
 import { drawDuckEntity } from './duck.js';
-import { bgCanvas, trees, sortedTreeIdx, drawTree } from './world.js';
+import { bgCanvas, trees, sortedDrawList, drawTree, drawLandmark } from './world.js';
 import { drawParticles } from './particles.js';
 import { drawDpad } from './dpad.js';
+import { drawInfoBadge, drawInfoCard } from './ui.js';
+import { ROOMS } from './data.js';
+import { TRANSITION_DUR } from './constants.js';
+
+const HALF = TRANSITION_DUR / 2;
 
 export function render() {
-  // Single call — replaces ~300 fillRects for grass + flowers
+  // Background — single drawImage replaces ~300 fillRects
   cx.drawImage(bgCanvas, 0, 0);
 
-  // Depth sort: walk pre-sorted tree indices, insert duck at correct y — zero allocation
+  // Depth-sorted: trees, landmarks, and duck interleaved by y
   const duckFeetY = duck.y + DH;
   let duckDrawn = false;
-  for (const idx of sortedTreeIdx) {
-    if (!duckDrawn && duckFeetY <= trees[idx].y) {
+
+  for (const item of sortedDrawList) {
+    if (!duckDrawn && duckFeetY <= item.y) {
       drawDuckEntity();
       duckDrawn = true;
     }
-    drawTree(trees[idx], idx);
+    if (item.kind === 'tree') {
+      drawTree(trees[item.treeIdx], item.treeIdx);
+    } else {
+      drawLandmark(item.lm);
+    }
   }
   if (!duckDrawn) drawDuckEntity();
 
   drawParticles();
   drawDpad();
 
-  // Subtle title
+  // UI: info badge + card
+  drawInfoBadge(game.frame);
+  if (ui.cardOpen) drawInfoCard();
+
+  // Room transition fade overlay
+  if (room.transitioning) {
+    const t     = room.tf / HALF;
+    const alpha = t <= 1 ? t : 2 - t;    // 0→1 (fade out), then 1→0 (fade in)
+    cx.globalAlpha = Math.min(1, alpha);
+    cx.fillStyle   = '#000';
+    cx.fillRect(0, 0, GW, GH);
+    cx.globalAlpha = 1;
+  }
+
+  // Room name (top) + park name (bottom) — subtle labels
   cx.globalAlpha = 0.3;
   cx.fillStyle   = K.Wh;
   cx.font        = '4px monospace';
   cx.textAlign   = 'center';
-  cx.fillText('cubbon park', GW / 2, 7);
+  cx.fillText(ROOMS[room.current].name.toLowerCase(), GW / 2, 7);
+  cx.fillText('cubbon park', GW / 2, GH - 3);
   cx.textAlign   = 'left';
   cx.globalAlpha = 1;
 }

@@ -12,3 +12,18 @@ export const game = {
   bob: 0,
   visitedCount: 0,
 };
+
+export const room = {
+  current: 0,
+  transitioning: false,
+  tf: 0,          // transition frame counter 0..TRANSITION_DUR
+  nextRoom: null,
+  nextDuckX: 0,
+  nextDuckY: 0,
+};
+
+export const ui = {
+  nearLandmark: null,   // landmark object within range, or null
+  cardOpen: false,
+  card: null,           // landmark currently shown in the info card
+};

@@ -67,6 +67,10 @@ Silver Oak · Gulmohar · Jacaranda · Banyan · Peepal / Sacred Fig · Royal Pa
 duck/
 ├── index.html       Entry point
 ├── package.json     Dev server (npx serve)
+├── favicon.png      Browser tab icon
+├── preview.png      Social share image (1200×630)
+├── DESIGN.md        Visual design, colours, spacing, animation reference
+├── TECHNICAL.md     Architecture, module map, extension guide, running locally
 └── src/
     ├── main.js      Init + game loop
     ├── canvas.js    Canvas setup
@@ -84,6 +88,3 @@ duck/
     ├── update.js    Per-frame game logic
     └── render.js    Per-frame draw orchestration
 ```
-
-For visual design and colour reference see [DESIGN.md](./DESIGN.md).
-For technical documentation see [TECHNICAL.md](./TECHNICAL.md).

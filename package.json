@@ -1,6 +1,7 @@
 {
   "name": "cubbon-duck-chronicles",
   "version": "0.6.0",
+  "homepage": "https://duck.thedataareclean.com",
   "scripts": {
     "dev": "npx serve . --listen 3000"
   }

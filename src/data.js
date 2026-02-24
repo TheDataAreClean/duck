@@ -34,15 +34,15 @@ export const ROOMS = [
     name: 'Attara Kacheri',
     exits: { west: 1, east: 6, south: 3 },
     trees: [
-      { x: 14, y: 42, species: 'silver-oak' },
-      { x: 58, y: 36, species: 'gulmohar'   },
-      { x: 32, y: 68, species: 'silver-oak' },
-      { x: 62, y: 88, species: 'jacaranda'  },
+      { x: 12, y: 40, species: 'silver-oak' },
+      { x: 64, y: 34, species: 'gulmohar'   },
+      { x: 16, y: 90, species: 'silver-oak' },
+      { x: 62, y: 86, species: 'jacaranda'  },
     ],
     landmarks: [
       {
         id: 'attara-kacheri',
-        x: 54, y: 56, type: 'building',
+        x: 42, y: 62, type: 'building',
         name: 'Attara Kacheri',
         year: '1864–1868',
         short: 'Greco-Roman secretariat, now High Court',
@@ -57,15 +57,15 @@ export const ROOMS = [
     name: 'Seshadri Road',
     exits: { east: 0, south: 5 },
     trees: [
-      { x: 16, y: 44, species: 'mango'      },
-      { x: 54, y: 38, species: 'peepal'     },
-      { x: 28, y: 78, species: 'polyalthia' },
-      { x: 60, y: 92, species: 'mango'      },
+      { x: 14, y: 42, species: 'mango'      },
+      { x: 62, y: 36, species: 'peepal'     },
+      { x: 18, y: 88, species: 'polyalthia' },
+      { x: 64, y: 96, species: 'mango'      },
     ],
     landmarks: [
       {
         id: 'century-club',
-        x: 38, y: 52, type: 'building',
+        x: 38, y: 62, type: 'building',
         name: 'Century Club',
         year: '1917',
         short: 'Founded 1917 for Indian members',
@@ -80,15 +80,15 @@ export const ROOMS = [
     name: 'Venkatappa Walk',
     exits: { north: 5, east: 7 },
     trees: [
-      { x: 22, y: 36, species: 'castanospermum' },
-      { x: 50, y: 44, species: 'castanospermum' },
+      { x: 12, y: 38, species: 'castanospermum' },
+      { x: 64, y: 42, species: 'castanospermum' },
       { x: 14, y: 86, species: 'banyan'         },
-      { x: 62, y: 72, species: 'silver-oak'     },
+      { x: 66, y: 78, species: 'silver-oak'     },
     ],
     landmarks: [
       {
         id: 'venkatappa-gallery',
-        x: 56, y: 52, type: 'building',
+        x: 46, y: 60, type: 'building',
         name: 'Venkatappa Art Gallery',
         year: '1975',
         short: 'Watercolourist\'s gallery, opened 1975',
@@ -96,7 +96,7 @@ export const ROOMS = [
       },
       {
         id: 'chamarajendra-statue',
-        x: 40, y: 108, type: 'statue',
+        x: 30, y: 108, type: 'statue',
         name: 'Chamarajendra Wadiyar',
         year: '1927',
         short: 'Marble tribute sculpted by G.K. Mhatre',
@@ -111,15 +111,15 @@ export const ROOMS = [
     name: 'Central Lawn',
     exits: { west: 5, north: 0, east: 4, south: 7 },
     trees: [
-      { x: 18, y: 40, species: 'jacaranda'       },
-      { x: 56, y: 36, species: 'jacaranda'       },
-      { x: 34, y: 80, species: 'indian-laburnum' },
-      { x: 64, y: 94, species: 'gulmohar'        },
+      { x: 12, y: 40, species: 'jacaranda'       },
+      { x: 66, y: 34, species: 'jacaranda'       },
+      { x: 16, y: 92, species: 'indian-laburnum' },
+      { x: 68, y: 98, species: 'gulmohar'        },
     ],
     landmarks: [
       {
         id: 'bandstand',
-        x: 34, y: 58, type: 'pavilion',
+        x: 40, y: 62, type: 'pavilion',
         name: 'Octagonal Bandstand',
         year: 'c. 1914',
         short: 'Cast-iron Victorian bandstand, relocated 1937',
@@ -127,7 +127,7 @@ export const ROOMS = [
       },
       {
         id: 'mark-cubbon-statue',
-        x: 22, y: 108, type: 'statue',
+        x: 52, y: 110, type: 'statue',
         name: 'Sir Mark Cubbon',
         year: '1866',
         short: 'Bronze equestrian by Carlo Marochetti, 1866',
@@ -142,15 +142,15 @@ export const ROOMS = [
     name: 'East Lawns',
     exits: { west: 3, north: 6, south: 8 },
     trees: [
-      { x: 16, y: 44, species: 'jackfruit'   },
-      { x: 54, y: 52, species: 'bamboo'      },
-      { x: 30, y: 88, species: 'peltophorum' },
-      { x: 65, y: 86, species: 'jackfruit'   },
+      { x: 12, y: 40, species: 'jackfruit'   },
+      { x: 62, y: 36, species: 'bamboo'      },
+      { x: 8,  y: 92, species: 'peltophorum' },
+      { x: 68, y: 88, species: 'jackfruit'   },
     ],
     landmarks: [
       {
         id: 'bamboo-grove',
-        x: 58, y: 60, type: 'grove',
+        x: 44, y: 64, type: 'grove',
         name: 'Bamboo Grove',
         year: 'historic',
         short: 'Lush bamboo thicket, cool and full of birdsong',
@@ -158,7 +158,7 @@ export const ROOMS = [
       },
       {
         id: 'lotus-pond',
-        x: 18, y: 80, type: 'pond',
+        x: 28, y: 74, type: 'pond',
         name: 'Lotus Pond',
         year: 'historic',
         short: 'Ornamental pond blooming with lotus',
@@ -173,15 +173,15 @@ export const ROOMS = [
     name: 'Fountain Road',
     exits: { north: 1, east: 3, south: 2 },
     trees: [
-      { x: 22, y: 36, species: 'royal-palm' },
-      { x: 56, y: 36, species: 'royal-palm' },
-      { x: 38, y: 80, species: 'araucaria'  },
-      { x: 14, y: 96, species: 'silver-oak' },
+      { x: 12, y: 36, species: 'royal-palm' },
+      { x: 64, y: 38, species: 'royal-palm' },
+      { x: 8,  y: 88, species: 'araucaria'  },
+      { x: 66, y: 98, species: 'silver-oak' },
     ],
     landmarks: [
       {
         id: 'musical-fountain',
-        x: 42, y: 56, type: 'fountain',
+        x: 46, y: 56, type: 'fountain',
         name: 'Musical Fountain',
         year: '1995',
         short: 'India\'s first computerised musical fountain',
@@ -189,7 +189,7 @@ export const ROOMS = [
       },
       {
         id: 'state-central-library',
-        x: 28, y: 64, type: 'building',
+        x: 26, y: 72, type: 'building',
         name: 'State Central Library',
         year: '1915',
         short: 'Memorial hall opened as library 1 May 1915',
@@ -204,15 +204,15 @@ export const ROOMS = [
     name: 'Queens Road',
     exits: { west: 0, south: 4 },
     trees: [
-      { x: 18, y: 44, species: 'indian-laburnum' },
-      { x: 56, y: 38, species: 'gulmohar'        },
-      { x: 30, y: 82, species: 'peepal'          },
-      { x: 64, y: 92, species: 'banyan'          },
+      { x: 12, y: 42, species: 'indian-laburnum' },
+      { x: 64, y: 36, species: 'gulmohar'        },
+      { x: 16, y: 88, species: 'peepal'          },
+      { x: 66, y: 94, species: 'banyan'          },
     ],
     landmarks: [
       {
         id: 'press-club',
-        x: 38, y: 58, type: 'building',
+        x: 40, y: 62, type: 'building',
         name: 'Press Club',
         year: '1969',
         short: 'Media hub founded 1969 in Cubbon Park',
@@ -220,7 +220,7 @@ export const ROOMS = [
       },
       {
         id: 'edward-vii-statue',
-        x: 54, y: 104, type: 'statue',
+        x: 38, y: 108, type: 'statue',
         name: 'Statue of Edward VII',
         year: '1919',
         short: 'Marble King Edward VII by Leonard Jennings',
@@ -235,15 +235,15 @@ export const ROOMS = [
     name: 'Museum Grounds',
     exits: { west: 2, north: 3, east: 8 },
     trees: [
-      { x: 20, y: 38, species: 'castanospermum' },
-      { x: 58, y: 44, species: 'jacaranda'      },
-      { x: 32, y: 82, species: 'araucaria'      },
-      { x: 62, y: 96, species: 'peepal'         },
+      { x: 12, y: 38, species: 'castanospermum' },
+      { x: 64, y: 44, species: 'jacaranda'      },
+      { x: 10, y: 90, species: 'araucaria'      },
+      { x: 68, y: 100, species: 'peepal'        },
     ],
     landmarks: [
       {
         id: 'government-museum',
-        x: 32, y: 56, type: 'building',
+        x: 34, y: 62, type: 'building',
         name: 'Government Museum',
         year: '1865',
         short: 'South India\'s second-oldest museum, founded 1865',
@@ -251,7 +251,7 @@ export const ROOMS = [
       },
       {
         id: 'bal-bhavan',
-        x: 54, y: 100, type: 'building',
+        x: 42, y: 108, type: 'building',
         name: 'Jawahar Bal Bhavan',
         year: '1967',
         short: 'Children\'s cultural centre, opened 1967',
@@ -266,15 +266,15 @@ export const ROOMS = [
     name: 'Aquarium Corner',
     exits: { west: 7, north: 4 },
     trees: [
-      { x: 16, y: 44, species: 'jackfruit'   },
-      { x: 56, y: 38, species: 'peltophorum' },
-      { x: 28, y: 82, species: 'banyan'      },
-      { x: 64, y: 94, species: 'gulmohar'    },
+      { x: 12, y: 40, species: 'jackfruit'   },
+      { x: 64, y: 36, species: 'peltophorum' },
+      { x: 14, y: 88, species: 'banyan'      },
+      { x: 66, y: 96, species: 'gulmohar'    },
     ],
     landmarks: [
       {
         id: 'aquarium',
-        x: 40, y: 58, type: 'building',
+        x: 42, y: 62, type: 'building',
         name: 'Namma Bengaluru Aquarium',
         year: '1983',
         short: 'Octagonal aquarium, inaugurated 1983, renovated 2024',
@@ -282,7 +282,7 @@ export const ROOMS = [
       },
       {
         id: 'queen-victoria-statue',
-        x: 22, y: 104, type: 'statue',
+        x: 26, y: 108, type: 'statue',
         name: 'Queen Victoria',
         year: '1906',
         short: '11-foot marble by Sir Thomas Brock, unveiled 1906',

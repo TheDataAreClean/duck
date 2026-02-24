@@ -231,67 +231,241 @@ export const LM_COLOR = {
   grove:    '#81C784',
 };
 
-function drawLandmarkIconOnto(ctx, type, x, y) {
+function drawLandmarkIconOnto(ctx, type, id, x, y) {
   const col = LM_COLOR[type] || '#EEE';
-  ctx.fillStyle = col;
 
-  switch (type) {
-    case 'statue':
-      ctx.fillRect(x - 1, y - 6, 3, 5);
-      ctx.fillRect(x,     y - 7, 1, 1);
-      ctx.fillStyle = '#9E9E9E';
-      ctx.fillRect(x - 2, y - 1, 5, 1);
-      break;
-    case 'building':
-      ctx.fillRect(x - 3, y - 6, 7, 5);
-      ctx.fillStyle = '#FFF9C4';
-      ctx.fillRect(x - 2, y - 5, 1, 2);
-      ctx.fillRect(x + 1, y - 5, 1, 2);
-      ctx.fillStyle = '#5D4037';
-      ctx.fillRect(x,     y - 2, 1, 2);
+  switch (id) {
+    // ── Buildings ────────────────────────────────────────────────────────────
+    case 'attara-kacheri': {
+      // Neoclassical high court — 4 columns, triangular pediment, steps
+      ctx.fillStyle = '#D7CCC8';
+      ctx.fillRect(x - 5, y - 2, 11, 1);   // wide base step
+      ctx.fillRect(x - 4, y - 3,  9, 1);   // upper step
       ctx.fillStyle = col;
-      ctx.fillRect(x - 4, y - 7, 9, 2);
+      ctx.fillRect(x - 4, y - 7,  9, 4);   // wall body
+      ctx.fillStyle = '#D7CCC8';
+      ctx.fillRect(x - 3, y - 7,  1, 4);   // column 1
+      ctx.fillRect(x - 1, y - 7,  1, 4);   // column 2
+      ctx.fillRect(x + 1, y - 7,  1, 4);   // column 3
+      ctx.fillRect(x + 3, y - 7,  1, 4);   // column 4
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 5, y - 8, 11, 1);   // entablature
+      ctx.fillRect(x - 4, y - 9,  9, 1);   // pediment base
+      ctx.fillRect(x - 2, y - 10, 5, 1);   // pediment mid
+      ctx.fillRect(x,     y - 11, 1, 1);   // pediment apex
       break;
-    case 'fountain':
-      ctx.fillStyle = '#42A5F5';
-      ctx.fillRect(x,     y - 8, 1, 5);
-      ctx.fillRect(x - 1, y - 7, 1, 4);
-      ctx.fillRect(x + 1, y - 7, 1, 4);
-      ctx.fillRect(x - 2, y - 3, 5, 1);
-      ctx.fillRect(x - 1, y - 2, 3, 1);
+    }
+
+    case 'century-club': {
+      // Colonial social club — low-pitched roof, veranda posts, arched window
+      ctx.fillStyle = '#795548';
+      ctx.fillRect(x - 4, y - 10, 9, 2);   // roof
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 4, y - 8,  9, 6);   // body
+      ctx.fillStyle = '#D7CCC8';
+      ctx.fillRect(x - 3, y - 7,  1, 5);   // veranda post L
+      ctx.fillRect(x + 2, y - 7,  1, 5);   // veranda post R
+      ctx.fillStyle = '#FFF9C4';
+      ctx.fillRect(x - 1, y - 7,  3, 3);   // arched window opening
+      ctx.fillRect(x,     y - 8,  1, 1);   // arch top pixel
       break;
-    case 'pond':
-      ctx.fillStyle = '#42A5F5';
-      ctx.fillRect(x - 5, y - 3, 10, 3);
-      ctx.fillRect(x - 3, y - 4, 6,  1);
-      ctx.fillRect(x - 3, y,     6,  1);
-      ctx.fillStyle = '#81D4FA';
-      ctx.fillRect(x - 3, y - 3, 2,  1);
+    }
+
+    case 'venkatappa-gallery': {
+      // Indo-Saracenic art gallery — pointed arch, crenellated parapet
+      ctx.fillStyle = '#8D6E63';
+      ctx.fillRect(x - 4, y - 9,  9, 2);   // roof band
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 4, y - 7,  9, 5);   // body
+      ctx.fillStyle = '#FFF9C4';
+      ctx.fillRect(x - 1, y - 6,  3, 4);   // central arch interior
+      ctx.fillRect(x,     y - 7,  1, 1);   // pointed arch tip
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 4, y - 10, 2, 1);   // crenellation 1
+      ctx.fillRect(x - 1, y - 10, 2, 1);   // crenellation 2
+      ctx.fillRect(x + 2, y - 10, 2, 1);   // crenellation 3
       break;
-    case 'pavilion':
-      ctx.fillRect(x - 3, y - 5, 7, 4);
-      ctx.fillStyle = '#5D4037';
-      ctx.fillRect(x - 4, y - 7, 9, 2);
-      ctx.fillRect(x - 2, y - 9, 5, 3);
-      ctx.fillRect(x,     y -10, 1, 1);
+    }
+
+    case 'state-central-library': {
+      // Classical library — dome, side windows, arched entrance
+      ctx.fillStyle = '#8D6E63';
+      ctx.fillRect(x - 2, y - 10, 5, 2);   // dome drum
+      ctx.fillRect(x - 1, y - 11, 3, 1);   // dome body
+      ctx.fillRect(x,     y - 12, 1, 1);   // finial
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 4, y - 8,  9, 5);   // main body
+      ctx.fillRect(x - 5, y - 9, 11, 1);   // cornice
+      ctx.fillStyle = '#FFF9C4';
+      ctx.fillRect(x - 3, y - 7,  1, 2);   // left window
+      ctx.fillRect(x + 2, y - 7,  1, 2);   // right window
+      ctx.fillRect(x - 1, y - 5,  3, 3);   // entrance arch
       break;
-    case 'grove':
-      ctx.fillStyle = '#558B2F';
-      ctx.fillRect(x - 4, y - 6, 3, 5);
-      ctx.fillRect(x + 1, y - 5, 3, 4);
-      ctx.fillRect(x - 1, y - 7, 3, 4);
+    }
+
+    case 'government-museum': {
+      // Wide-domed museum — columns, large central entrance
+      ctx.fillStyle = '#8D6E63';
+      ctx.fillRect(x - 3, y - 10, 7, 2);   // dome drum
+      ctx.fillRect(x - 2, y - 11, 5, 1);   // dome body
+      ctx.fillRect(x - 1, y - 12, 3, 1);   // upper dome
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 5, y - 8, 11, 5);   // wide body
+      ctx.fillStyle = '#D7CCC8';
+      ctx.fillRect(x - 4, y - 8,  1, 4);   // left column
+      ctx.fillRect(x + 3, y - 8,  1, 4);   // right column
+      ctx.fillStyle = '#FFF9C4';
+      ctx.fillRect(x - 1, y - 6,  3, 4);   // central entrance
       break;
+    }
+
+    case 'press-club': {
+      // Victorian press club — gabled roof, bay window
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 3, y - 8,  7, 6);   // body
+      ctx.fillRect(x - 2, y - 9,  5, 1);   // gable base
+      ctx.fillRect(x - 1, y - 10, 3, 1);   // gable mid
+      ctx.fillRect(x,     y - 11, 1, 1);   // gable apex
+      ctx.fillStyle = '#FFF9C4';
+      ctx.fillRect(x - 1, y - 7,  3, 3);   // bay window
+      ctx.fillStyle = '#8D6E63';
+      ctx.fillRect(x,     y - 7,  1, 1);   // window mullion
+      ctx.fillRect(x - 1, y - 5,  3, 1);   // window sill
+      break;
+    }
+
+    case 'bal-bhavan': {
+      // Children's centre — corner tower, body windows
+      ctx.fillStyle = '#A1887F';
+      ctx.fillRect(x - 1, y - 12, 3, 4);   // tower
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 2, y - 9,  5, 2);   // parapet
+      ctx.fillRect(x - 4, y - 7,  9, 5);   // main body
+      ctx.fillStyle = '#FFF9C4';
+      ctx.fillRect(x - 1, y - 11, 1, 2);   // tower window L
+      ctx.fillRect(x + 1, y - 11, 1, 2);   // tower window R
+      ctx.fillRect(x - 3, y - 6,  2, 2);   // body window L
+      ctx.fillRect(x + 1, y - 6,  2, 2);   // body window R
+      break;
+    }
+
+    case 'aquarium': {
+      // Aquarium — wide building, four blue fish-tank windows
+      ctx.fillStyle = '#8D6E63';
+      ctx.fillRect(x - 4, y - 9,  9, 1);   // roof band
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 4, y - 8,  9, 6);   // body
+      ctx.fillStyle = '#29B6F6';
+      ctx.fillRect(x - 3, y - 7,  2, 2);   // water window TL
+      ctx.fillRect(x + 1, y - 7,  2, 2);   // water window TR
+      ctx.fillRect(x - 3, y - 4,  2, 2);   // water window BL
+      ctx.fillRect(x + 1, y - 4,  2, 2);   // water window BR
+      break;
+    }
+
+    // ── Statues ──────────────────────────────────────────────────────────────
+    case 'mark-cubbon-statue': {
+      // Equestrian — horse body, raised foreleg, rider above
+      ctx.fillStyle = '#9E9E9E';
+      ctx.fillRect(x - 2, y - 2,  5, 2);   // wide base
+      ctx.fillRect(x - 1, y - 4,  3, 2);   // pedestal
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 3, y - 8,  7, 3);   // horse body
+      ctx.fillRect(x - 2, y - 5,  1, 1);   // hind leg
+      ctx.fillRect(x + 2, y - 5,  1, 1);   // fore leg down
+      ctx.fillRect(x + 3, y - 7,  1, 2);   // fore leg raised
+      ctx.fillRect(x - 1, y - 10, 2, 2);   // rider torso
+      ctx.fillRect(x,     y - 11, 1, 1);   // rider head
+      break;
+    }
+
+    case 'chamarajendra-statue': {
+      // Standing Maharaja — tall pedestal, royal robes, outstretched arm
+      ctx.fillStyle = '#9E9E9E';
+      ctx.fillRect(x - 2, y - 2,  5, 2);   // base
+      ctx.fillRect(x - 1, y - 6,  3, 4);   // tall pedestal
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 1, y - 10, 3, 4);   // figure body
+      ctx.fillRect(x,     y - 11, 1, 1);   // head
+      ctx.fillRect(x - 2, y - 9,  1, 1);   // outstretched arm
+      ctx.fillRect(x - 2, y - 7,  5, 1);   // wide robe hem
+      break;
+    }
+
+    case 'edward-vii-statue': {
+      // Standing king — scepter in extended arm, crown
+      ctx.fillStyle = '#9E9E9E';
+      ctx.fillRect(x - 2, y - 2,  5, 2);   // base
+      ctx.fillRect(x - 1, y - 5,  3, 3);   // pedestal
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 1, y - 9,  3, 4);   // figure
+      ctx.fillRect(x,     y - 10, 1, 1);   // head
+      ctx.fillRect(x + 2, y - 9,  1, 3);   // scepter / extended arm
+      ctx.fillStyle = '#FFD700';
+      ctx.fillRect(x - 1, y - 11, 3, 1);   // crown
+      break;
+    }
+
+    case 'queen-victoria-statue': {
+      // Seated queen — wide gown, crown, broad plinth
+      ctx.fillStyle = '#9E9E9E';
+      ctx.fillRect(x - 2, y - 2,  5, 2);   // base
+      ctx.fillRect(x - 2, y - 5,  5, 3);   // wide plinth
+      ctx.fillStyle = col;
+      ctx.fillRect(x - 2, y - 9,  5, 4);   // wide gown / skirt
+      ctx.fillRect(x - 1, y - 10, 3, 1);   // upper body
+      ctx.fillRect(x,     y - 11, 1, 1);   // head
+      ctx.fillStyle = '#FFD700';
+      ctx.fillRect(x - 1, y - 12, 3, 1);   // crown
+      break;
+    }
+
+    // ── Other landmark types (one of each — keep existing drawing) ────────────
+    default: {
+      ctx.fillStyle = col;
+      switch (type) {
+        case 'fountain':
+          ctx.fillStyle = '#42A5F5';
+          ctx.fillRect(x,     y - 8, 1, 5);
+          ctx.fillRect(x - 1, y - 7, 1, 4);
+          ctx.fillRect(x + 1, y - 7, 1, 4);
+          ctx.fillRect(x - 2, y - 3, 5, 1);
+          ctx.fillRect(x - 1, y - 2, 3, 1);
+          break;
+        case 'pond':
+          ctx.fillStyle = '#42A5F5';
+          ctx.fillRect(x - 5, y - 3, 10, 3);
+          ctx.fillRect(x - 3, y - 4,  6, 1);
+          ctx.fillRect(x - 3, y,      6, 1);
+          ctx.fillStyle = '#81D4FA';
+          ctx.fillRect(x - 3, y - 3,  2, 1);
+          break;
+        case 'pavilion':
+          ctx.fillRect(x - 3, y - 5,  7, 4);
+          ctx.fillStyle = '#5D4037';
+          ctx.fillRect(x - 4, y - 7,  9, 2);
+          ctx.fillRect(x - 2, y - 9,  5, 3);
+          ctx.fillRect(x,     y - 10, 1, 1);
+          break;
+        case 'grove':
+          ctx.fillStyle = '#558B2F';
+          ctx.fillRect(x - 4, y - 6,  3, 5);
+          ctx.fillRect(x + 1, y - 5,  3, 4);
+          ctx.fillRect(x - 1, y - 7,  3, 4);
+          break;
+      }
+    }
   }
 
   ctx.fillStyle = col;
-  ctx.fillRect(x - 2, y - 1, 5, 2);   // base marker
+  ctx.fillRect(x - 2, y - 1, 5, 2);   // ground marker
 }
 
 function buildLandmarkSprite(lm) {
   const oc = new OffscreenCanvas(LM_W, LM_H);
   const ot = oc.getContext('2d');
   ot.imageSmoothingEnabled = false;
-  drawLandmarkIconOnto(ot, lm.type, LM_OX, LM_OY);
+  drawLandmarkIconOnto(ot, lm.type, lm.id, LM_OX, LM_OY);
   return { canvas: oc, bx: lm.x - LM_OX, by: lm.y - LM_OY };
 }
 

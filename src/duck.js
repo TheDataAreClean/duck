@@ -5,17 +5,19 @@ import { duck, game } from './state.js';
 // ── Sprite pixel data ─────────────────────────────────────────────────────
 // 12w × 10h body rows + 2h leg rows = 12h total
 // l=light-cheek  d=dark-wing  e=eye  o=orange-beak/feet  y=yellow  .=empty
+// l=light-belly  d=tail/dark-wing  e=eye  o=orange-beak/feet  y=yellow  .=empty
+// Duck faces RIGHT. Cols 0-1 = tail region; cols 8-10 = beak (protrudes past head at col 7).
 const DK_BODY = [
-  '....yyyy....',
-  '...yyyyyy...',
-  '..yyyyyyy...',
-  '.lyyyyyeooo.',
-  '.lyyyyyyyy..',
-  '.lyydyyyyy..',
-  '.yyyyyyyyyy.',
-  '.yyyyyyyyy..',
-  '..yyyyyyy...',
-  '...yyyyy....',
+  '....yyyy....',  // r0: head top (4px, cols 4-7)
+  'd...yyyyy...',  // r1: tail begins (d@0), head (cols 4-8)
+  'dd.lyyyeooo.',  // r2: tail×2 (dd@0-1), cheek (l@3), eye (e@7), beak row1 (@8-10)
+  'd.lyyyyyooo.',  // r3: tail (d@0), cheek (l@2), body (@3-7), beak row2 (@8-10)
+  '.lyyyyyyyy..',  // r4: cheek (l@1), body
+  '.lyydyyyyy..',  // r5: cheek, dark wing (d@4)
+  '.yyyyyyyyyy.',  // r6: wide belly
+  '.yyyyyyyyy..',  // r7: belly
+  '..yyyyyyy...',  // r8: lower belly
+  '...yyyyy....',  // r9: bottom
 ];
 const DK_LEGS = [
   ['....oo......', '....oo......'],
@@ -49,8 +51,8 @@ export function buildDuckSprites() {
           if (ch !== '.') { ot.fillStyle = K.O; ot.fillRect(c, DK_BODY.length + row, 1, 1); }
         }
 
-      // Eye glint — always drawn on right side; flip transform handles left-facing
-      ot.fillStyle = K.Wh; ot.fillRect(8, 3, 1, 1);
+      // Eye glint — upper-right of head (eye is at col 7 row 2)
+      ot.fillStyle = K.Wh; ot.fillRect(8, 1, 1, 1);
       DUCK_SPRITES.push(oc);
     }
   }

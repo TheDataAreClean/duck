@@ -49,13 +49,15 @@ export function render() {
     cx.globalAlpha = 1;
   }
 
-  // Subtle labels
-  cx.globalAlpha = 0.75;
-  cx.fillStyle   = K.Wh;
-  cx.font        = '4px monospace';
-  cx.textAlign   = 'center';
-  cx.fillText(ROOMS[room.current].name.toLowerCase(), GW / 2, 13);
-  cx.fillText('cubbon park', GW / 2, GH - 10);
-  cx.textAlign   = 'left';
-  cx.globalAlpha = 1;
+  // Subtle labels — hidden while info card is open
+  if (!ui.cardOpen) {
+    cx.globalAlpha = 0.75;
+    cx.fillStyle   = K.Wh;
+    cx.font        = '4px monospace';
+    cx.textAlign   = 'center';
+    cx.fillText(ROOMS[room.current].name.toLowerCase(), GW / 2, 13);
+    cx.fillText('cubbon park', GW / 2, GH - 10);
+    cx.textAlign   = 'left';
+    cx.globalAlpha = 1;
+  }
 }

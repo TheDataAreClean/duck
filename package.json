@@ -1,6 +1,6 @@
 {
-  "name": "cubbon-park-duck",
-  "version": "1.0.0",
+  "name": "cubbon-duck-chronicles",
+  "version": "0.6.0",
   "scripts": {
     "dev": "npx serve . --listen 3000"
   }

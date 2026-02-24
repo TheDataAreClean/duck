@@ -321,6 +321,28 @@ All canvas work happens at startup. During gameplay, every frame is draw-only.
 
 ---
 
+## Meta Tags
+
+Defined in `index.html`. Controls the browser tab title, share previews, and social cards.
+
+| Tag | Value |
+|-----|-------|
+| `<title>` | `cubbon duck chronicles` |
+| `meta name="description"` | `better late than never. happy birthday!` |
+| `og:title` | `cubbon duck chronicles` |
+| `og:description` | `better late than never. happy birthday!` |
+| `og:image` | `https://thedataareclean.github.io/duck/preview.png` |
+| `og:image:width` | `1200` |
+| `og:image:height` | `630` |
+| `twitter:card` | `summary_large_image` |
+| `twitter:title` | `cubbon duck chronicles` |
+| `twitter:description` | `better late than never. happy birthday!` |
+| `twitter:image` | `https://thedataareclean.github.io/duck/preview.png` |
+
+The preview image (`preview.png`) is a 1200×630 static image in the repo root. To update the social card, replace `preview.png` with a new image at the same dimensions.
+
+---
+
 ## How to Extend
 
 ### Add a tree to a room

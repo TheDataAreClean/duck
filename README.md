@@ -1,4 +1,6 @@
-# Duck in Cubbon Park
+# cubbon duck chronicles
+
+![Preview](preview.png)
 
 A 2D 8-bit pixel art duck game for mobile portrait screens. Walk a duck through nine rooms of Cubbon Park, Bangalore — visit trees, discover real landmarks, and read the history behind them.
 

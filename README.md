@@ -69,7 +69,7 @@ Silver Oak · Gulmohar · Jacaranda · Banyan · Peepal / Sacred Fig · Royal Pa
 ## Project Structure
 
 ```
-kashvi/
+duck/
 ├── index.html       Entry point
 ├── package.json     Dev server (npx serve)
 └── src/

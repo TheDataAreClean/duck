@@ -1,5 +1,5 @@
 import { cx, GW, GH } from './canvas.js';
-import { UI_BG, UI_BORDER } from './constants.js';
+import { K, UI_BG, UI_BORDER, MM_INACTIVE, MM_ADJACENT, MM_CURRENT } from './constants.js';
 import { duck, game, room } from './state.js';
 import { ROOMS } from './data.js';
 
@@ -67,7 +67,7 @@ export function buildMiniMap() {
   mc.fillRect(MM_W - 1, 0, 1, MM_H);
 
   // Rooms and corridors share one colour — reads as a connected park path
-  mc.fillStyle = '#4E7450';
+  mc.fillStyle = MM_INACTIVE;
   for (const [x, y, w, h] of CORRIDORS) mc.fillRect(x, y, w, h);
   for (const p of MAP_POS) mc.fillRect(p.x, p.y, 4, 4);
 }
@@ -80,7 +80,7 @@ export function drawMiniMap() {
 
   // Adjacent rooms (reachable from here) — slightly brighter than base
   const exits = ROOMS[room.current].exits;
-  cx.fillStyle = '#6EA870';
+  cx.fillStyle = MM_ADJACENT;
   for (const dir of ['north', 'south', 'east', 'west']) {
     const rid = exits[dir];
     if (rid != null) {
@@ -91,13 +91,13 @@ export function drawMiniMap() {
 
   // Current room — bright green
   const cur = MAP_POS[room.current];
-  cx.fillStyle = '#88EE88';
+  cx.fillStyle = MM_CURRENT;
   cx.fillRect(MM_X + cur.x, MM_Y + cur.y, 4, 4);
 
   // Duck dot — 1×1 px gold, mapped within the 4×4 room block
   const ddx = cur.x + Math.min(3, (duck.x / GW * 4) | 0);
   const ddy = cur.y + Math.min(3, (duck.y / GH * 4) | 0);
-  cx.fillStyle = '#FFD700';
+  cx.fillStyle = K.Y;
   cx.fillRect(MM_X + ddx, MM_Y + ddy, 1, 1);
 }
 
@@ -153,7 +153,7 @@ export function drawExitIndicators(frame) {
   const alpha  = 0.70 + Math.sin(frame * 0.09) * 0.25; // pulses 0.45 → 0.95
 
   // Shadow pass — draw arrows 1 px down-right in black for contrast
-  cx.fillStyle   = '#000000';
+  cx.fillStyle   = K.Bl;
   cx.globalAlpha = alpha * 0.55;
   if (exits.north != null) drawArrow(PX_UP,    (GW / 2 - 3) | 0, 3);
   if (exits.south != null) drawArrow(PX_DOWN,  (GW / 2 - 3) | 0, GH - 5);
@@ -161,7 +161,7 @@ export function drawExitIndicators(frame) {
   if (exits.east  != null) drawArrow(PX_RIGHT, GW - 5, (GH / 2 - 3) | 0);
 
   // Main pass — bright white, 1 px above/left of shadow
-  cx.fillStyle   = '#FFFFFF';
+  cx.fillStyle   = K.Wh;
   cx.globalAlpha = alpha;
   if (exits.north != null) drawArrow(PX_UP,    (GW / 2 - 3) | 0, 2);
   if (exits.south != null) drawArrow(PX_DOWN,  (GW / 2 - 3) | 0, GH - 6);

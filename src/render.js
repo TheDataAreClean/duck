@@ -1,5 +1,5 @@
 import { cx, GW, GH } from './canvas.js';
-import { K, DH, TRANSITION_HALF } from './constants.js';
+import { K, F4, DH, TRANSITION_HALF } from './constants.js';
 import { duck, game, room, ui } from './state.js';
 import { drawDuckEntity } from './duck.js';
 import { bgCanvas, trees, sortedDrawList, drawTree, drawLandmark } from './world.js';
@@ -44,7 +44,7 @@ export function render() {
     const t     = room.tf / TRANSITION_HALF;
     const alpha = t <= 1 ? t : 2 - t;
     cx.globalAlpha = Math.min(1, alpha);
-    cx.fillStyle   = '#000';
+    cx.fillStyle   = K.Bl;
     cx.fillRect(0, 0, GW, GH);
     cx.globalAlpha = 1;
   }
@@ -53,7 +53,7 @@ export function render() {
   if (!ui.cardOpen) {
     cx.globalAlpha = 0.75;
     cx.fillStyle   = K.Wh;
-    cx.font        = '4px monospace';
+    cx.font        = F4;
     cx.textAlign   = 'center';
     cx.fillText(ROOMS[room.current].name.toLowerCase(), GW / 2, 13);
     cx.fillText('cubbon park', GW / 2, GH - 10);

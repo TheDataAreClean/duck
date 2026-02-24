@@ -90,4 +90,5 @@ kashvi/
     └── render.js    Per-frame draw orchestration
 ```
 
-For full technical documentation see [TECHNICAL.md](./TECHNICAL.md).
+For visual design and colour reference see [DESIGN.md](./DESIGN.md).
+For technical documentation see [TECHNICAL.md](./TECHNICAL.md).

@@ -1,5 +1,5 @@
 import { cx, GW, GH } from './canvas.js';
-import { UI_BG, UI_BORDER } from './constants.js';
+import { K, UI_BG, UI_BORDER, LM_COLOR, F3, F4, F5, UI_DIM, UI_BODY, UI_WARM } from './constants.js';
 import { ui } from './state.js';
 
 // ── Text utilities (exported for preprocessData in main.js) ───────────────────
@@ -31,15 +31,6 @@ export const TYPE_LABEL = {
   grove:    'Grove',
 };
 
-const TYPE_COLOR = {
-  statue:   '#BDBDBD',
-  building: '#BCAAA4',
-  fountain: '#4FC3F7',
-  pond:     '#29B6F6',
-  pavilion: '#A1887F',
-  grove:    '#81C784',
-};
-
 // ── Info button ───────────────────────────────────────────────────────────────
 const IBX = 3, IBY = 3, IBW = 16, IBH = 9;
 
@@ -59,8 +50,8 @@ export function drawInfoBadge(frame) {
   cx.fillRect(IBX,          IBY + IBH - 1, IBW, 1);
   cx.fillRect(IBX,          IBY,          1, IBH);
   cx.fillRect(IBX + IBW - 1, IBY,          1, IBH);
-  cx.fillStyle   = '#FFF9C4';
-  cx.font        = '5px monospace';
+  cx.fillStyle   = UI_WARM;
+  cx.font        = F5;
   cx.textAlign   = 'center';
   cx.fillText('[i]', IBX + IBW / 2, IBY + 7);
   cx.textAlign   = 'left';
@@ -90,7 +81,7 @@ export function drawInfoCard() {
   cx.fillRect(CX,          CY,          1,  CH);
   cx.fillRect(CX + CW - 1, CY,          1,  CH);
 
-  const col = TYPE_COLOR[lm.type] || '#EEE';
+  const col = LM_COLOR[lm.type] || '#EEE';
   const tx  = CX + PAD;
   let   ty  = CY + PAD;
 
@@ -98,14 +89,14 @@ export function drawInfoCard() {
   const badgeW = lm._typeUpper.length * 2.4 + 4 | 0;
   cx.fillStyle = col;
   cx.fillRect(tx, ty, badgeW, 6);
-  cx.fillStyle = '#000';
-  cx.font      = '3px monospace';
+  cx.fillStyle = K.Ey;
+  cx.font      = F3;
   cx.fillText(lm._typeUpper, tx + 2, ty + 5);
   ty += 9;
 
   // Name — uses pre-computed _nameLines
-  cx.fillStyle = '#FFFFFF';
-  cx.font      = '5px monospace';
+  cx.fillStyle = K.Wh;
+  cx.font      = F5;
   for (const nl of lm._nameLines) {
     cx.fillText(nl, tx, ty + 5);
     ty += 7;
@@ -114,8 +105,8 @@ export function drawInfoCard() {
 
   // Year
   if (lm.year && lm.year !== 'historic') {
-    cx.fillStyle = '#9E9E9E';
-    cx.font      = '3px monospace';
+    cx.fillStyle = UI_DIM;
+    cx.font      = F3;
     cx.fillText(lm.year, tx, ty + 3);
     ty += 6;
   }
@@ -127,8 +118,8 @@ export function drawInfoCard() {
   ty += 4;
 
   // Body — uses pre-computed _wrappedInfo
-  cx.fillStyle = '#CCCCCC';
-  cx.font      = '4px monospace';
+  cx.fillStyle = UI_BODY;
+  cx.font      = F4;
   for (const line of lm._wrappedInfo) {
     if (ty + 5 > CY + CH - 10) break;
     cx.fillText(line, tx, ty + 4);
@@ -137,8 +128,8 @@ export function drawInfoCard() {
 
   // Tap hint
   cx.globalAlpha = 0.45;
-  cx.fillStyle   = '#FFFFFF';
-  cx.font        = '3px monospace';
+  cx.fillStyle   = K.Wh;
+  cx.font        = F3;
   cx.textAlign   = 'center';
   cx.fillText('tap anywhere to close', CX + CW / 2, CY + CH - 3);
   cx.textAlign   = 'left';

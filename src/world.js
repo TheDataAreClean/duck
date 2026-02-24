@@ -1,11 +1,9 @@
 import { cx, GW, GH } from './canvas.js';
-import { K, UI_BG, UI_BORDER } from './constants.js';
+import { K, UI_BG, UI_BORDER, FL_COLS, LM_COLOR, TR, LD, UI_WARM, F4 } from './constants.js';
 import { SPECIES, ROOMS } from './data.js';
 import { ui } from './state.js';
 
 // ── Flowers ───────────────────────────────────────────────────────────────────
-const FL_COLS = ['#E91E63','#FFC107','#CE93D8','#F44336','#FFFFFF','#FF7043','#80CBC4'];
-
 function genFlowers() {
   const f = [];
   for (let i = 0; i < 22; i++)
@@ -37,7 +35,7 @@ function bakeBackground(flowers) {
 
   for (const { x, y, c } of flowers) {
     bt.fillStyle = c;         bt.fillRect(x, y, 2, 2);
-    bt.fillStyle = '#FFF9C4'; bt.fillRect(x, y, 1, 1);
+    bt.fillStyle = UI_WARM;   bt.fillRect(x, y, 1, 1);
   }
   return oc;
 }
@@ -83,10 +81,10 @@ function drawTreeOnto(ot, spriteType, sc) {
       ot.fillStyle = K.lf1;
       ot.fillRect(ox - s(10), oy - s(30), s(20), s(10));
       ot.fillRect(ox - s(6),  oy - s(34), s(12), s(7));
-      ot.fillStyle = '#E53935';
+      ot.fillStyle = TR.gulFlower;
       ot.fillRect(ox - s(7), oy - s(33), s(5), s(4));
       ot.fillRect(ox + s(2), oy - s(29), s(4), s(3));
-      ot.fillStyle = '#FF7043';
+      ot.fillStyle = TR.gulFlower2;
       ot.fillRect(ox - s(2), oy - s(36), s(5), s(4));
       ot.fillRect(ox + s(4), oy - s(33), s(4), s(3));
       ot.fillRect(ox - s(9), oy - s(29), s(3), s(2));
@@ -94,20 +92,20 @@ function drawTreeOnto(ot, spriteType, sc) {
     }
 
     case 2: { // Jacaranda — violet-blue canopy
-      ot.fillStyle = '#6D4C41'; ot.fillRect(ox - s(2), oy - s(16), s(5), s(16));
-      ot.fillStyle = '#5D4037'; ot.fillRect(ox,         oy - s(16), s(1), s(16));
-      ot.fillStyle = '#2E4A6A'; ot.fillRect(ox - s(9),  oy - s(28), s(18), s(14));
-      ot.fillStyle = '#3A5F8A';
+      ot.fillStyle = TR.jacTrunk;   ot.fillRect(ox - s(2), oy - s(16), s(5), s(16));
+      ot.fillStyle = K.trunk;       ot.fillRect(ox,         oy - s(16), s(1), s(16));
+      ot.fillStyle = TR.jacCanopyD; ot.fillRect(ox - s(9),  oy - s(28), s(18), s(14));
+      ot.fillStyle = TR.jacCanopy;
       ot.fillRect(ox - s(7),  oy - s(32), s(14), s(10));
       ot.fillRect(ox - s(4),  oy - s(36), s(8),  s(7));
-      ot.fillStyle = '#7B1FA2';
+      ot.fillStyle = TR.jacFlowerD;
       ot.fillRect(ox - s(5), oy - s(34), s(3), s(3));
       ot.fillRect(ox + s(1), oy - s(30), s(3), s(2));
       ot.fillRect(ox - s(2), oy - s(37), s(3), s(3));
-      ot.fillStyle = '#9C27B0';
+      ot.fillStyle = TR.jacFlower;
       ot.fillRect(ox - s(7), oy - s(29), s(3), s(2));
       ot.fillRect(ox + s(3), oy - s(35), s(3), s(2));
-      ot.fillStyle = '#CE93D8'; ot.fillRect(ox - s(1), oy - s(38), s(2), s(2));
+      ot.fillStyle = TR.jacFlowerL; ot.fillRect(ox - s(1), oy - s(38), s(2), s(2));
       break;
     }
 
@@ -117,7 +115,7 @@ function drawTreeOnto(ot, spriteType, sc) {
       ot.fillRect(ox - s(8), oy - s(8),  s(2), s(8));
       ot.fillRect(ox + s(6), oy - s(10), s(2), s(10));
       ot.fillStyle = K.trunkD; ot.fillRect(ox + s(1), oy - s(18), s(1), s(18));
-      ot.fillStyle = '#1A4A20'; ot.fillRect(ox - s(14), oy - s(28), s(28), s(16));
+      ot.fillStyle = TR.bnDark; ot.fillRect(ox - s(14), oy - s(28), s(28), s(16));
       ot.fillStyle = K.lf0;
       ot.fillRect(ox - s(12), oy - s(32), s(24), s(12));
       ot.fillRect(ox - s(8),  oy - s(36), s(16), s(8));
@@ -131,15 +129,15 @@ function drawTreeOnto(ot, spriteType, sc) {
     }
 
     case 4: { // Royal Palm — tall thin trunk, small frond crown
-      ot.fillStyle = '#8D6E63'; ot.fillRect(ox - s(1), oy - s(32), s(3), s(32));
-      ot.fillStyle = '#795548'; ot.fillRect(ox + s(1), oy - s(32), s(1), s(32));
-      ot.fillStyle = '#6D4C41';
+      ot.fillStyle = TR.rpTrunk;  ot.fillRect(ox - s(1), oy - s(32), s(3), s(32));
+      ot.fillStyle = TR.rpTrunkD; ot.fillRect(ox + s(1), oy - s(32), s(1), s(32));
+      ot.fillStyle = TR.jacTrunk;
       for (let i = 0; i < 8; i++)
         ot.fillRect(ox - s(1), oy - s(5 + i * 4), s(3), s(1));
-      ot.fillStyle = '#33691E';
+      ot.fillStyle = TR.rpFrondD;
       ot.fillRect(ox - s(7), oy - s(36), s(15), s(5));
       ot.fillRect(ox - s(4), oy - s(40), s(9),  s(6));
-      ot.fillStyle = '#558B2F';
+      ot.fillStyle = TR.rpFrond;
       ot.fillRect(ox - s(6), oy - s(35), s(4),  s(2));
       ot.fillRect(ox + s(2), oy - s(35), s(4),  s(2));
       ot.fillRect(ox - s(2), oy - s(39), s(5),  s(2));
@@ -162,9 +160,9 @@ function drawTreeOnto(ot, spriteType, sc) {
     }
 
     case 6: { // Mango / Jackfruit — round dense canopy, stout trunk
-      ot.fillStyle = '#4E342E'; ot.fillRect(ox - s(3), oy - s(12), s(7), s(12));
-      ot.fillStyle = '#3E2723'; ot.fillRect(ox + s(1), oy - s(12), s(2), s(12));
-      ot.fillStyle = '#1B5E20'; ot.fillRect(ox - s(11), oy - s(27), s(22), s(18));
+      ot.fillStyle = K.trunkD;    ot.fillRect(ox - s(3), oy - s(12), s(7), s(12));
+      ot.fillStyle = TR.mnTrunkD; ot.fillRect(ox + s(1), oy - s(12), s(2), s(12));
+      ot.fillStyle = K.lf0;       ot.fillRect(ox - s(11), oy - s(27), s(22), s(18));
       ot.fillStyle = K.lf1;
       ot.fillRect(ox - s(10), oy - s(30), s(20), s(14));
       ot.fillRect(ox - s(7),  oy - s(34), s(14), s(10));
@@ -172,24 +170,23 @@ function drawTreeOnto(ot, spriteType, sc) {
       ot.fillRect(ox - s(8),  oy - s(28), s(5),  s(6));
       ot.fillRect(ox + s(3),  oy - s(28), s(5),  s(6));
       ot.fillStyle = K.lf3; ot.fillRect(ox - s(4), oy - s(33), s(8), s(5));
-      ot.fillStyle = '#FF8F00';
+      ot.fillStyle = TR.mnFruit;
       ot.fillRect(ox - s(4), oy - s(20), s(2), s(2));
       ot.fillRect(ox + s(2), oy - s(23), s(2), s(2));
       break;
     }
 
     case 7: { // Bamboo — cluster of thin stalks
-      const STALK_COLORS = ['#558B2F','#7CB342','#33691E','#8BC34A','#689F38'];
       const offsets = [-s(6), -s(3), 0, s(3), s(6)];
       for (let k = 0; k < 5; k++) {
         const sx = ox + offsets[k];
         const h  = s(26) + (k % 2) * s(4);
-        ot.fillStyle = STALK_COLORS[k];
+        ot.fillStyle = TR.bmStalks[k];
         ot.fillRect(sx, oy - h, s(2), h);
-        ot.fillStyle = '#33691E';
+        ot.fillStyle = TR.rpFrondD;
         for (let n = 0; n < 4; n++)
           ot.fillRect(sx - s(1), oy - s(6 + n * 6), s(4), s(1));
-        ot.fillStyle = '#8BC34A';
+        ot.fillStyle = TR.bmStalks[3];
         ot.fillRect(sx - s(3), oy - h,       s(7), s(2));
         ot.fillRect(sx - s(2), oy - h - s(2), s(5), s(2));
       }
@@ -222,15 +219,6 @@ function buildTreeSprite(tree) {
 // ── Landmark icon pre-rendering ───────────────────────────────────────────────
 const LM_W = 14, LM_H = 14, LM_OX = 7, LM_OY = 12;
 
-export const LM_COLOR = {
-  statue:   '#BDBDBD',
-  building: '#BCAAA4',
-  fountain: '#4FC3F7',
-  pond:     '#29B6F6',
-  pavilion: '#A1887F',
-  grove:    '#81C784',
-};
-
 function drawLandmarkIconOnto(ctx, type, id, x, y) {
   const col = LM_COLOR[type] || '#EEE';
 
@@ -238,12 +226,12 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
     // ── Buildings ────────────────────────────────────────────────────────────
     case 'attara-kacheri': {
       // Neoclassical high court — 4 columns, triangular pediment, steps
-      ctx.fillStyle = '#D7CCC8';
+      ctx.fillStyle = LD.stone;
       ctx.fillRect(x - 5, y - 2, 11, 1);   // wide base step
       ctx.fillRect(x - 4, y - 3,  9, 1);   // upper step
       ctx.fillStyle = col;
       ctx.fillRect(x - 4, y - 7,  9, 4);   // wall body
-      ctx.fillStyle = '#D7CCC8';
+      ctx.fillStyle = LD.stone;
       ctx.fillRect(x - 3, y - 7,  1, 4);   // column 1
       ctx.fillRect(x - 1, y - 7,  1, 4);   // column 2
       ctx.fillRect(x + 1, y - 7,  1, 4);   // column 3
@@ -258,14 +246,14 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
 
     case 'century-club': {
       // Colonial social club — low-pitched roof, veranda posts, arched window
-      ctx.fillStyle = '#795548';
+      ctx.fillStyle = LD.roof;
       ctx.fillRect(x - 4, y - 10, 9, 2);   // roof
       ctx.fillStyle = col;
       ctx.fillRect(x - 4, y - 8,  9, 6);   // body
-      ctx.fillStyle = '#D7CCC8';
+      ctx.fillStyle = LD.stone;
       ctx.fillRect(x - 3, y - 7,  1, 5);   // veranda post L
       ctx.fillRect(x + 2, y - 7,  1, 5);   // veranda post R
-      ctx.fillStyle = '#FFF9C4';
+      ctx.fillStyle = LD.window;
       ctx.fillRect(x - 1, y - 7,  3, 3);   // arched window opening
       ctx.fillRect(x,     y - 8,  1, 1);   // arch top pixel
       break;
@@ -273,11 +261,11 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
 
     case 'venkatappa-gallery': {
       // Indo-Saracenic art gallery — pointed arch, crenellated parapet
-      ctx.fillStyle = '#8D6E63';
+      ctx.fillStyle = LD.door;
       ctx.fillRect(x - 4, y - 9,  9, 2);   // roof band
       ctx.fillStyle = col;
       ctx.fillRect(x - 4, y - 7,  9, 5);   // body
-      ctx.fillStyle = '#FFF9C4';
+      ctx.fillStyle = LD.window;
       ctx.fillRect(x - 1, y - 6,  3, 4);   // central arch interior
       ctx.fillRect(x,     y - 7,  1, 1);   // pointed arch tip
       ctx.fillStyle = col;
@@ -289,14 +277,14 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
 
     case 'state-central-library': {
       // Classical library — dome, side windows, arched entrance
-      ctx.fillStyle = '#8D6E63';
+      ctx.fillStyle = LD.door;
       ctx.fillRect(x - 2, y - 10, 5, 2);   // dome drum
       ctx.fillRect(x - 1, y - 11, 3, 1);   // dome body
       ctx.fillRect(x,     y - 12, 1, 1);   // finial
       ctx.fillStyle = col;
       ctx.fillRect(x - 4, y - 8,  9, 5);   // main body
       ctx.fillRect(x - 5, y - 9, 11, 1);   // cornice
-      ctx.fillStyle = '#FFF9C4';
+      ctx.fillStyle = LD.window;
       ctx.fillRect(x - 3, y - 7,  1, 2);   // left window
       ctx.fillRect(x + 2, y - 7,  1, 2);   // right window
       ctx.fillRect(x - 1, y - 5,  3, 3);   // entrance arch
@@ -305,16 +293,16 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
 
     case 'government-museum': {
       // Wide-domed museum — columns, large central entrance
-      ctx.fillStyle = '#8D6E63';
+      ctx.fillStyle = LD.door;
       ctx.fillRect(x - 3, y - 10, 7, 2);   // dome drum
       ctx.fillRect(x - 2, y - 11, 5, 1);   // dome body
       ctx.fillRect(x - 1, y - 12, 3, 1);   // upper dome
       ctx.fillStyle = col;
       ctx.fillRect(x - 5, y - 8, 11, 5);   // wide body
-      ctx.fillStyle = '#D7CCC8';
+      ctx.fillStyle = LD.stone;
       ctx.fillRect(x - 4, y - 8,  1, 4);   // left column
       ctx.fillRect(x + 3, y - 8,  1, 4);   // right column
-      ctx.fillStyle = '#FFF9C4';
+      ctx.fillStyle = LD.window;
       ctx.fillRect(x - 1, y - 6,  3, 4);   // central entrance
       break;
     }
@@ -326,9 +314,9 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
       ctx.fillRect(x - 2, y - 9,  5, 1);   // gable base
       ctx.fillRect(x - 1, y - 10, 3, 1);   // gable mid
       ctx.fillRect(x,     y - 11, 1, 1);   // gable apex
-      ctx.fillStyle = '#FFF9C4';
+      ctx.fillStyle = LD.window;
       ctx.fillRect(x - 1, y - 7,  3, 3);   // bay window
-      ctx.fillStyle = '#8D6E63';
+      ctx.fillStyle = LD.door;
       ctx.fillRect(x,     y - 7,  1, 1);   // window mullion
       ctx.fillRect(x - 1, y - 5,  3, 1);   // window sill
       break;
@@ -336,12 +324,12 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
 
     case 'bal-bhavan': {
       // Children's centre — corner tower, body windows
-      ctx.fillStyle = '#A1887F';
+      ctx.fillStyle = LM_COLOR.pavilion;
       ctx.fillRect(x - 1, y - 12, 3, 4);   // tower
       ctx.fillStyle = col;
       ctx.fillRect(x - 2, y - 9,  5, 2);   // parapet
       ctx.fillRect(x - 4, y - 7,  9, 5);   // main body
-      ctx.fillStyle = '#FFF9C4';
+      ctx.fillStyle = LD.window;
       ctx.fillRect(x - 1, y - 11, 1, 2);   // tower window L
       ctx.fillRect(x + 1, y - 11, 1, 2);   // tower window R
       ctx.fillRect(x - 3, y - 6,  2, 2);   // body window L
@@ -351,11 +339,11 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
 
     case 'aquarium': {
       // Aquarium — wide building, four blue fish-tank windows
-      ctx.fillStyle = '#8D6E63';
+      ctx.fillStyle = LD.door;
       ctx.fillRect(x - 4, y - 9,  9, 1);   // roof band
       ctx.fillStyle = col;
       ctx.fillRect(x - 4, y - 8,  9, 6);   // body
-      ctx.fillStyle = '#29B6F6';
+      ctx.fillStyle = LM_COLOR.pond;
       ctx.fillRect(x - 3, y - 7,  2, 2);   // water window TL
       ctx.fillRect(x + 1, y - 7,  2, 2);   // water window TR
       ctx.fillRect(x - 3, y - 4,  2, 2);   // water window BL
@@ -366,7 +354,7 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
     // ── Statues ──────────────────────────────────────────────────────────────
     case 'mark-cubbon-statue': {
       // Equestrian — horse body, raised foreleg, rider above
-      ctx.fillStyle = '#9E9E9E';
+      ctx.fillStyle = LD.pedestal;
       ctx.fillRect(x - 2, y - 2,  5, 2);   // wide base
       ctx.fillRect(x - 1, y - 4,  3, 2);   // pedestal
       ctx.fillStyle = col;
@@ -381,7 +369,7 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
 
     case 'chamarajendra-statue': {
       // Standing Maharaja — tall pedestal, royal robes, outstretched arm
-      ctx.fillStyle = '#9E9E9E';
+      ctx.fillStyle = LD.pedestal;
       ctx.fillRect(x - 2, y - 2,  5, 2);   // base
       ctx.fillRect(x - 1, y - 6,  3, 4);   // tall pedestal
       ctx.fillStyle = col;
@@ -394,28 +382,28 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
 
     case 'edward-vii-statue': {
       // Standing king — scepter in extended arm, crown
-      ctx.fillStyle = '#9E9E9E';
+      ctx.fillStyle = LD.pedestal;
       ctx.fillRect(x - 2, y - 2,  5, 2);   // base
       ctx.fillRect(x - 1, y - 5,  3, 3);   // pedestal
       ctx.fillStyle = col;
       ctx.fillRect(x - 1, y - 9,  3, 4);   // figure
       ctx.fillRect(x,     y - 10, 1, 1);   // head
       ctx.fillRect(x + 2, y - 9,  1, 3);   // scepter / extended arm
-      ctx.fillStyle = '#FFD700';
+      ctx.fillStyle = K.Y;
       ctx.fillRect(x - 1, y - 11, 3, 1);   // crown
       break;
     }
 
     case 'queen-victoria-statue': {
       // Seated queen — wide gown, crown, broad plinth
-      ctx.fillStyle = '#9E9E9E';
+      ctx.fillStyle = LD.pedestal;
       ctx.fillRect(x - 2, y - 2,  5, 2);   // base
       ctx.fillRect(x - 2, y - 5,  5, 3);   // wide plinth
       ctx.fillStyle = col;
       ctx.fillRect(x - 2, y - 9,  5, 4);   // wide gown / skirt
       ctx.fillRect(x - 1, y - 10, 3, 1);   // upper body
       ctx.fillRect(x,     y - 11, 1, 1);   // head
-      ctx.fillStyle = '#FFD700';
+      ctx.fillStyle = K.Y;
       ctx.fillRect(x - 1, y - 12, 3, 1);   // crown
       break;
     }
@@ -425,7 +413,7 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
       ctx.fillStyle = col;
       switch (type) {
         case 'fountain':
-          ctx.fillStyle = '#42A5F5';
+          ctx.fillStyle = LD.water;
           ctx.fillRect(x,     y - 8, 1, 5);
           ctx.fillRect(x - 1, y - 7, 1, 4);
           ctx.fillRect(x + 1, y - 7, 1, 4);
@@ -433,22 +421,22 @@ function drawLandmarkIconOnto(ctx, type, id, x, y) {
           ctx.fillRect(x - 1, y - 2, 3, 1);
           break;
         case 'pond':
-          ctx.fillStyle = '#42A5F5';
+          ctx.fillStyle = LD.water;
           ctx.fillRect(x - 5, y - 3, 10, 3);
           ctx.fillRect(x - 3, y - 4,  6, 1);
           ctx.fillRect(x - 3, y,      6, 1);
-          ctx.fillStyle = '#81D4FA';
+          ctx.fillStyle = LD.waterL;
           ctx.fillRect(x - 3, y - 3,  2, 1);
           break;
         case 'pavilion':
           ctx.fillRect(x - 3, y - 5,  7, 4);
-          ctx.fillStyle = '#5D4037';
+          ctx.fillStyle = K.trunk;
           ctx.fillRect(x - 4, y - 7,  9, 2);
           ctx.fillRect(x - 2, y - 9,  5, 3);
           ctx.fillRect(x,     y - 10, 1, 1);
           break;
         case 'grove':
-          ctx.fillStyle = '#558B2F';
+          ctx.fillStyle = LD.grove;
           ctx.fillRect(x - 4, y - 6,  3, 5);
           ctx.fillRect(x + 1, y - 5,  3, 4);
           ctx.fillRect(x - 1, y - 7,  3, 4);
@@ -539,7 +527,7 @@ export function drawLandmark(lm, lmIdx) {
     cx.fillRect(lx,      ly,     1,  7);
     cx.fillRect(lx + lw - 1, ly, 1,  7);
     cx.fillStyle   = col;
-    cx.font        = '4px monospace';
+    cx.font        = F4;
     cx.textAlign   = 'center';
     cx.fillText(lm._nameLower, lm.x, lm.y - 11);
     cx.textAlign   = 'left';

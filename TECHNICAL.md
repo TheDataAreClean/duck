@@ -38,7 +38,9 @@ Sets up `<canvas id="g">`. Computes an integer pixel scale `SC` so the game fill
 ---
 
 ### `constants.js`
-Single source of truth for every tunable value, the colour palette, and shared UI tokens.
+Single source of truth for every tunable value, colour token, and typography constant.
+
+**Tuning constants**
 
 | Constant | Default | Effect |
 |----------|---------|--------|
@@ -53,12 +55,21 @@ Single source of truth for every tunable value, the colour palette, and shared U
 | `TRANSITION_DUR` | 20 | Fade duration in frames (out + in) |
 | `TRANSITION_HALF` | 10 | Midpoint frame — when room swap happens |
 | `LANDMARK_DIST` | 20 | Proximity to show info badge (px) |
-| `UI_BG` | `#0E0E1A` | Shared panel background colour |
-| `UI_BORDER` | `#2D2D50` | Shared panel border colour |
 
-`K` palette maps short names to hex strings for consistent colouring across modules.
+**Design tokens** — see [DESIGN.md](./DESIGN.md) for full colour reference.
 
-`UI_BG` and `UI_BORDER` are imported by `ui.js`, `hud.js`, `world.js`, and `dpad.js` to keep all panels visually consistent.
+| Group | Exports | Purpose |
+|-------|---------|---------|
+| `K` | palette object | Duck, grass, leaf, trunk, and utility colours (`K.Bl`, `K.Wh`, `K.Y`, …) |
+| `UI_BG`, `UI_BORDER` | strings | Shared panel background/border — propagates to badge, card, mini-map, d-pad |
+| `UI_DIM`, `UI_BODY`, `UI_WARM` | strings | UI text colours (secondary, body, warm white) |
+| `F3`, `F4`, `F5` | strings | Typography constants (`'3px monospace'` … `'5px monospace'`) |
+| `LM_COLOR` | object | Landmark type → hex colour (shared by `world.js` and `ui.js`) |
+| `FL_COLS` | array | 7-colour flower palette |
+| `MM_INACTIVE`, `MM_ADJACENT`, `MM_CURRENT` | strings | Mini-map room colours |
+| `TR` | object | All tree-specific colours (Gulmohar, Jacaranda, Palm, Bamboo, etc.) |
+| `LD` | object | Landmark icon detail colours (stone, window, door, water, etc.) |
+| `P_HEART`, `P_NOTE` | strings | Particle colours |
 
 ---
 
@@ -190,9 +201,9 @@ Info badge and info card overlay. All panels use `UI_BG` / `UI_BORDER` from `con
 Mini-map and exit direction indicators.
 
 **Mini-map** — 18×18 px `OffscreenCanvas` at bottom-left (3, GH−21). Static base pre-rendered once by `buildMiniMap()` (background + room blocks + corridors). Each frame `drawMiniMap()` blits the base, then overlays:
-- Adjacent rooms (exits from current) in medium green `#6EA870`
-- Current room in bright green `#88EE88`
-- Duck position as a 1×1 gold dot mapped within the 4×4 room block
+- Adjacent rooms (exits from current) in `MM_ADJACENT`
+- Current room in `MM_CURRENT`
+- Duck position as a 1×1 `K.Y` dot mapped within the 4×4 room block
 
 Room blocks are 4×4 px, step = 6 (4 px room + 2 px gap), within a 1 px border.
 
@@ -217,7 +228,7 @@ row=0 → y=1   row=1 → y=7   row=2 → y=13
 ---
 
 ### `particles.js`
-Hearts (`♥`) burst from the duck on tree visits. Reverse-iteration splice prevents skipping elements on removal.
+Heart (`P_HEART`) and music note (`P_NOTE`) bursts spawn from the duck on tree visits. One in three particles is a note; the rest are hearts. Reverse-iteration splice prevents skipping on removal.
 
 ---
 

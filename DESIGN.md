@@ -43,6 +43,7 @@ This ensures pixel-perfect upscaling with no sub-pixel blurring. `image-renderin
 | `lf3` | `#66BB6A` | Tree canopy brightest highlight     |
 | `trunk` | `#5D4037` | Tree trunk base                   |
 | `trunkD` | `#4E342E` | Tree trunk shadow edge           |
+| `Bl`  | `#000000` | Transition fade, particle shadows   |
 
 ### UI panels (`constants.js`)
 
@@ -53,7 +54,22 @@ This ensures pixel-perfect upscaling with no sub-pixel blurring. `image-renderin
 
 `UI_BG` and `UI_BORDER` propagate to: info badge, info card, landmark proximity label, mini-map, and d-pad cross background.
 
-### Landmark type colours
+### UI text colours (`constants.js`)
+
+| Token     | Hex       | Used for                                |
+|-----------|-----------|-----------------------------------------|
+| `UI_DIM`  | `#9E9E9E` | Secondary text (year)                   |
+| `UI_BODY` | `#CCCCCC` | Card body text                          |
+| `UI_WARM` | `#FFF9C4` | Warm white — badge text, windows, notes |
+
+### Particle colours (`constants.js`)
+
+| Token     | Hex       | Used for             |
+|-----------|-----------|----------------------|
+| `P_HEART` | `#FF4081` | Heart burst (hot pink) |
+| `P_NOTE`  | `#FFF9C4` | Music note burst (= `UI_WARM`) |
+
+### Landmark type colours (`LM_COLOR` in `constants.js`)
 
 | Type       | Hex       |
 |------------|-----------|
@@ -66,23 +82,67 @@ This ensures pixel-perfect upscaling with no sub-pixel blurring. `image-renderin
 
 Used for: landmark icon sprites, type badge in info card, proximity label text.
 
-### Flower colours (random per room, 22 flowers each)
+### Flower palette (`FL_COLS` in `constants.js`)
 
 `#E91E63` `#FFC107` `#CE93D8` `#F44336` `#FFFFFF` `#FF7043` `#80CBC4`
 
-Each flower is a 2×2 block with the colour, and a 1×1 `#FFF9C4` highlight on the top-left pixel.
+Each flower is a 2×2 block with the colour, and a 1×1 `UI_WARM` (`#FFF9C4`) highlight on the top-left pixel.
+
+### Mini-map room colours (`constants.js`)
+
+| Token         | Hex       | State                          |
+|---------------|-----------|--------------------------------|
+| `MM_INACTIVE` | `#4E7450` | Not current, not adjacent      |
+| `MM_ADJACENT` | `#6EA870` | Reachable from current room    |
+| `MM_CURRENT`  | `#88EE88` | Current room                   |
+
+### Tree colours (`TR` in `constants.js`)
+
+| Key           | Hex       | Used for                                     |
+|---------------|-----------|----------------------------------------------|
+| `gulFlower`   | `#E53935` | Gulmohar red flowers                         |
+| `gulFlower2`  | `#FF7043` | Gulmohar orange flowers                      |
+| `jacTrunk`    | `#6D4C41` | Jacaranda trunk base; Royal Palm ring bands  |
+| `jacCanopyD`  | `#2E4A6A` | Jacaranda deep canopy                        |
+| `jacCanopy`   | `#3A5F8A` | Jacaranda canopy                             |
+| `jacFlowerD`  | `#7B1FA2` | Jacaranda deep violet blooms                 |
+| `jacFlower`   | `#9C27B0` | Jacaranda violet blooms                      |
+| `jacFlowerL`  | `#CE93D8` | Jacaranda light blooms                       |
+| `rpTrunk`     | `#8D6E63` | Royal Palm trunk                             |
+| `rpTrunkD`    | `#795548` | Royal Palm trunk shadow / rings              |
+| `rpFrondD`    | `#33691E` | Royal Palm frond dark; Bamboo node rings     |
+| `rpFrond`     | `#558B2F` | Royal Palm frond; also `LD.grove`            |
+| `bmStalks`    | array (5) | Bamboo stalk cycle — `#558B2F` `#7CB342` `#33691E` `#8BC34A` `#689F38` |
+| `mnFruit`     | `#FF8F00` | Mango / Jackfruit fruit hint                 |
+| `mnTrunkD`    | `#3E2723` | Mango / Jackfruit darkest trunk shadow       |
+| `bnDark`      | `#1A4A20` | Banyan / Peepal darkest canopy base          |
+
+### Landmark icon detail colours (`LD` in `constants.js`)
+
+| Key        | Hex       | Used for                              |
+|------------|-----------|---------------------------------------|
+| `stone`    | `#D7CCC8` | Columns, trim, stonework              |
+| `window`   | `#FFF9C4` | Window fill (= `UI_WARM`)             |
+| `door`     | `#8D6E63` | Wood / doors / dome drums             |
+| `roof`     | `#795548` | Roof bands (= `TR.rpTrunkD`)          |
+| `water`    | `#42A5F5` | Fountain / pond water                 |
+| `waterL`   | `#81D4FA` | Water ripple highlight                |
+| `pedestal` | `#9E9E9E` | Statue base (= `UI_DIM`)              |
+| `grove`    | `#558B2F` | Grove vegetation (= `TR.rpFrond`)     |
 
 ---
 
 ## Typography
 
-All text uses `'4px monospace'` or `'3px monospace'` — no font loading, no anti-aliasing.
+All text uses pixel-size monospace — no font loading, no anti-aliasing.
 
-| Size | Used for                                      |
-|------|-----------------------------------------------|
-| 5px  | Info button `[i]` label; info card name lines |
-| 4px  | Landmark proximity label; card body text; room name label; "cubbon park" label |
-| 3px  | Card type badge; card year; card "tap to close" hint |
+### Font constants (`constants.js`)
+
+| Constant | Value              | Used for                                      |
+|----------|--------------------|-----------------------------------------------|
+| `F5`     | `'5px monospace'`  | Info button `[i]` label; info card name lines |
+| `F4`     | `'4px monospace'`  | Landmark proximity label; card body text; room name; "cubbon park" label |
+| `F3`     | `'3px monospace'`  | Card type badge; card year; card "tap to close" hint |
 
 `textAlign` is set to `'center'` only for centred elements (room label, "cubbon park", `[i]`, tap hint) and always restored to `'left'` immediately after.
 
@@ -120,7 +180,7 @@ Three layers of fill:
 
 Body is 10 rows, legs are 2 rows (rows 10–11). Four leg patterns (`DK_LEGS`) cycle through walk frames.
 
-An eye glint — 1×1 `#FFFFFF` at pixel `(8, 3)` — is always drawn on the right-facing sprite. The flip transform (canvas `scale(-1,1)`) mirrors it for left-facing.
+An eye glint — 1×1 `#FFFFFF` at pixel `(8, 1)` — is always drawn on the right-facing sprite. The flip transform (canvas `scale(-1,1)`) mirrors it for left-facing.
 
 ### Sprite set
 
@@ -172,12 +232,12 @@ Glow fades in at `+0.05/frame` and out at `-0.03/frame`.
 
 | Type | Characteristic colours |
 |------|------------------------|
-| Jacaranda (2) | Canopy: `#2E4A6A` / `#3A5F8A`; flowers: `#7B1FA2` / `#9C27B0` / `#CE93D8` |
-| Gulmohar (1) | Flowers: `#E53935` / `#FF7043` |
-| Royal Palm (4) | Trunk: `#8D6E63` / `#795548`; fronds: `#33691E` / `#558B2F` |
-| Bamboo (7) | 5 stalks, colours: `#558B2F` `#7CB342` `#33691E` `#8BC34A` `#689F38` |
-| Mango/Jackfruit (6) | Fruit hint: `#FF8F00` 2×2 blocks |
-| Banyan/Peepal (3) | Darkest canopy base: `#1A4A20`; extra prop trunks left and right |
+| Jacaranda (2) | Canopy: `TR.jacCanopyD` / `TR.jacCanopy`; flowers: `TR.jacFlowerD` / `TR.jacFlower` / `TR.jacFlowerL` |
+| Gulmohar (1) | Flowers: `TR.gulFlower` / `TR.gulFlower2` |
+| Royal Palm (4) | Trunk: `TR.rpTrunk` / `TR.rpTrunkD`; fronds: `TR.rpFrondD` / `TR.rpFrond` |
+| Bamboo (7) | 5 stalks via `TR.bmStalks`; node rings `TR.rpFrondD`; leaf tips `TR.bmStalks[3]` |
+| Mango/Jackfruit (6) | Fruit hint: `TR.mnFruit` 2×2 blocks |
+| Banyan/Peepal (3) | Darkest canopy base: `TR.bnDark`; extra prop trunks left and right |
 
 ---
 
@@ -210,7 +270,7 @@ Shown when duck is within `LANDMARK_DIST = 20 px` of a landmark.
 - **Background panel:** `UI_BG`, 7 px tall, width = `name_length * 2.4 + 8` px (pre-computed as `_nameWidth + 4`)
 - **Offset:** panel top-left at `(lm.x - _nameWidth/2 - 2, lm.y - 17)`
 - **Border:** 1 px `UI_BORDER` on all four sides
-- **Text:** `4px monospace`, type colour, `_nameLower` (pre-lowercased at startup)
+- **Text:** `F4`, type colour, `_nameLower` (pre-lowercased at startup)
 - **Opacity:** `0.92`
 
 ---
@@ -223,7 +283,7 @@ Appears when duck is near a landmark. Pulses to draw attention.
 - **Size:** 16 × 9 px
 - **Background:** `UI_BG`
 - **Border:** 1 px `UI_BORDER` on all four sides
-- **Text:** `[i]`, `5px monospace`, `#FFF9C4` (warm white), centred
+- **Text:** `[i]`, `F5`, `UI_WARM` (`#FFF9C4`), centred
 - **Alpha pulse:** `0.65 + sin(frame × 0.12) × 0.25` → range `0.40 → 0.90`
 
 ---
@@ -238,8 +298,8 @@ Full-screen overlay shown when `[i]` is tapped.
 
 ### Card dimensions
 
-- **Position:** `(5, 14)` — 5 px from left/right edges, 14 px from top
-- **Size:** 70 × 116 px
+- **Position:** `(5, 8)` — 5 px from left/right edges, 8 px from top
+- **Size:** 70 × 128 px
 - **Background:** `UI_BG`
 - **Border:** 1 px `UI_BORDER` on all four sides
 - **Inner padding:** 4 px
@@ -248,14 +308,14 @@ Full-screen overlay shown when `[i]` is tapped.
 
 | Element | Font | Colour | Spacing |
 |---------|------|--------|---------|
-| Type badge | `3px monospace` | black text on type-colour bg | height 6 px; text baseline at `ty + 5` |
+| Type badge | `F3` | `K.Ey` text on type-colour bg | height 6 px; text baseline at `ty + 5` |
 | Gap after badge | — | — | `ty += 9` |
-| Name lines | `5px monospace` | `#FFFFFF` | each line `ty += 7` |
+| Name lines | `F5` | `K.Wh` | each line `ty += 7` |
 | Gap after name | — | — | `ty += 1` |
-| Year (if not `'historic'`) | `3px monospace` | `#9E9E9E` | baseline `ty + 3`; `ty += 6` |
+| Year (if not `'historic'`) | `F3` | `UI_DIM` | baseline `ty + 3`; `ty += 6` |
 | Separator | — | `UI_BORDER` 1×1 px line | `ty += 2` before, `ty += 4` after |
-| Body lines | `4px monospace` | `#CCCCCC` | each line `ty += 6`; clipped if `ty + 5 > CY + CH - 10 = 120` |
-| "tap anywhere to close" | `3px monospace` | `#FFFFFF` at `0.45` alpha | centred; `y = CY + CH - 3 = 127` |
+| Body lines | `F4` | `UI_BODY` | each line `ty += 6`; clipped if `ty + 5 > CY + CH - 10 = 126` |
+| "tap anywhere to close" | `F3` | `K.Wh` at `0.45` alpha | centred; `y = CY + CH - 3 = 133` |
 
 **Type badge width:** `_typeUpper.length × 2.4 + 4` px (integer).
 
@@ -283,15 +343,15 @@ row index → canvas y:   0 → y=1    1 → y=7    2 → y=13
 
 ### Room colours
 
-| State | Colour |
-|-------|--------|
-| Inactive (not current, not adjacent) | `#4E7450` — muted green |
-| Adjacent (has an exit to/from current) | `#6EA870` — medium green |
-| Current room | `#88EE88` — bright green |
+| State | Token | Colour |
+|-------|-------|--------|
+| Inactive (not current, not adjacent) | `MM_INACTIVE` | `#4E7450` — muted green |
+| Adjacent (has an exit to/from current) | `MM_ADJACENT` | `#6EA870` — medium green |
+| Current room | `MM_CURRENT` | `#88EE88` — bright green |
 
 ### Corridors
 
-12 rects, each 2×2 px, filling the 2 px gaps between adjacent room blocks. Same colour as inactive rooms (`#4E7450`), baked into the static base canvas.
+12 rects, each 2×2 px, filling the 2 px gaps between adjacent room blocks. Same colour as inactive rooms (`MM_INACTIVE`), baked into the static base canvas.
 
 ```
 [5,  2, 2,2]  [11, 2, 2,2]                  (row 0 horizontal)
@@ -303,7 +363,7 @@ row index → canvas y:   0 → y=1    1 → y=7    2 → y=13
 
 ### Duck position dot
 
-1×1 px, `#FFD700`, mapped within the current room's 4×4 block:
+1×1 px, `K.Y` (`#FFD700`), mapped within the current room's 4×4 block:
 ```
 ddx = cur.x + min(3, floor(duck.x / GW × 4))
 ddy = cur.y + min(3, floor(duck.y / GH × 4))
@@ -424,7 +484,7 @@ X  X
  XXX
   X
 ```
-Colour: `#FF4081` — hot pink, at `globalAlpha = life`.
+Colour: `P_HEART` (`#FF4081`) — hot pink, at `globalAlpha = life`.
 
 ### Note shape (3 px wide, 3 px tall)
 
@@ -433,7 +493,7 @@ XX
  X
  X
 ```
-Colour: `#FFF9C4` — warm white, at `globalAlpha = life`.
+Colour: `P_NOTE` (`#FFF9C4`) — warm white (= `UI_WARM`), at `globalAlpha = life`.
 
 ---
 
@@ -472,7 +532,7 @@ Visited tree's `glow` value:
 t     = room.tf / 10
 alpha = t ≤ 1 ? t : 2 - t
 ```
-Room and duck position swap at frame 10 (midpoint, when screen is fully black).
+Room and duck position swap at frame 10 (midpoint, when screen is fully black). Overlay colour: `K.Bl` (`#000000`).
 
 ### Info badge pulse
 
@@ -490,7 +550,7 @@ alpha = 0.70 + sin(frame × 0.09) × 0.25  →  0.45 – 0.95
 
 ## Screen Labels
 
-Both labels use `4px monospace`, `K.Wh` (#FFFFFF), `globalAlpha = 0.75`.
+Both labels use `F4`, `K.Wh`, `globalAlpha = 0.75`.
 
 | Label | Content | Position |
 |-------|---------|----------|

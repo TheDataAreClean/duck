@@ -1,4 +1,5 @@
 import { cx } from './canvas.js';
+import { P_HEART, P_NOTE } from './constants.js';
 
 export const particles = [];
 
@@ -28,13 +29,13 @@ export function drawParticles() {
     cx.globalAlpha = life;
     const px = x | 0, py = y | 0;
     if (kind === 'heart') {
-      cx.fillStyle = '#FF4081';
+      cx.fillStyle = P_HEART;
       cx.fillRect(px,     py,     2, 1);
       cx.fillRect(px - 1, py - 1, 1, 1);
       cx.fillRect(px + 2, py - 1, 1, 1);
       cx.fillRect(px,     py + 1, 2, 2);
     } else {
-      cx.fillStyle = '#FFF9C4';
+      cx.fillStyle = P_NOTE;
       cx.fillRect(px,     py,     2, 1);
       cx.fillRect(px + 1, py - 2, 1, 3);
     }

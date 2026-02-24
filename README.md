@@ -4,16 +4,6 @@
 
 A 2D 8-bit pixel art duck game for mobile portrait screens. Walk a duck through nine rooms of Cubbon Park, Bangalore — visit trees, discover real landmarks, and read the history behind them.
 
-## Run
-
-```bash
-npm run dev
-# → http://localhost:3000
-```
-
-ES modules require HTTP — `file://` won't work.
-
----
 
 ## How to Play
 

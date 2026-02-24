@@ -4,6 +4,17 @@ Architecture, module reference, and extension guide for developers.
 
 ---
 
+## Running Locally
+
+```bash
+npm run dev
+# → http://localhost:3000
+```
+
+ES modules require HTTP — `file://` won't work.
+
+---
+
 ## Module Map
 
 ```
